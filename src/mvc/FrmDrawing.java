@@ -1,4 +1,4 @@
-package drawing;
+package mvc;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -34,6 +34,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+
+import dialogs.DlgCircle;
+import dialogs.DlgDonut;
+import dialogs.DlgLine;
+import dialogs.DlgPoint;
+import dialogs.DlgRectangle;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;

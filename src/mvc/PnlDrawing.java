@@ -1,4 +1,4 @@
-package drawing;
+package mvc;
 
 import javax.swing.JPanel;
 
