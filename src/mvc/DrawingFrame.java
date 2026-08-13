@@ -8,14 +8,20 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class DrawingFrame extends JFrame {
 
@@ -37,227 +43,647 @@ public class DrawingFrame extends JFrame {
 	private JToggleButton tglBtnCircle = new JToggleButton("Circle");
 	private JToggleButton tglBtnDonut = new JToggleButton("Donut");
 
+	private JToggleButton tglBtnHexagon = new JToggleButton("Hexagon");
+
+	private JToggleButton tglBtnInsideColor = new JToggleButton("Inside Color");
+	private JToggleButton tglBtnOutsideColor = new JToggleButton("Outside Color");
+
+	private JToggleButton tglBtnUndo = new JToggleButton("Undo");
+	private JToggleButton tglBtnRedo = new JToggleButton("Redo");
+	private JToggleButton tglBtnLoadNext = new JToggleButton("Load Next");
+
+	private JToggleButton tglBtnToFront = new JToggleButton("To Front");
+	private JToggleButton tglBtnToBack = new JToggleButton("To Back");
+	private JToggleButton tglBtnBringToFront = new JToggleButton("Bring To Front");
+	private JToggleButton tglBtnBringToBack = new JToggleButton("Bring To Back");
+
+	private JScrollPane scrollPane = new JScrollPane();
+	private JTextArea textArea = new JTextArea();
+	private JLabel lblLog = new JLabel("Log");
+
 	private JPanel contentPane;
+
+	private final Color backgroundColor = new Color(238, 232, 170);
+	private final Color borderColor = new Color(189, 183, 107);
+	private final Color textColor = new Color(139, 69, 19);
 
 	public DrawingFrame() {
 
-		setBackground(new Color(255, 228, 181));
-		setTitle("Milica Pelemis, IT61/2021");
+		setFont(new Font("Californian FB", Font.BOLD, 14));
+		setBackground(backgroundColor);
+		setTitle("Drawing App");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 700);
 		setLocationRelativeTo(null);
 		setMinimumSize(new Dimension(1000, 700));
 
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 228, 181));
+		contentPane.setBackground(backgroundColor);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		view.addMouseListener(new MouseAdapter() {
-		});
-
+		/*
+		 * DRAWING VIEW
+		 */
 		contentPane.add(view, BorderLayout.CENTER);
 
+		/*
+		 * LEFT PANEL
+		 */
 		JPanel pnlMenu = new JPanel();
-		pnlMenu.setBackground(new Color(255, 228, 181));
+		pnlMenu.setBorder(
+				new CompoundBorder(
+						null,
+						new MatteBorder(0, 0, 0, 2, borderColor)));
+
+		pnlMenu.setPreferredSize(new Dimension(150, 10));
+		pnlMenu.setBackground(backgroundColor);
+
 		contentPane.add(pnlMenu, BorderLayout.WEST);
 
 		GridBagLayout gbl_pnlMenu = new GridBagLayout();
-		gbl_pnlMenu.columnWidths = new int[] {122, 0};
-		gbl_pnlMenu.rowHeights = new int[] {198, 191, 226, 0};
-		gbl_pnlMenu.columnWeights = new double[] {0.0, Double.MIN_VALUE};
-		gbl_pnlMenu.rowWeights = new double[] {0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlMenu.columnWidths = new int[] {150, 0};
+		gbl_pnlMenu.rowHeights = new int[] {191, 270, 0};
+		gbl_pnlMenu.columnWeights =
+				new double[] {0.0, Double.MIN_VALUE};
+		gbl_pnlMenu.rowWeights =
+				new double[] {0.0, 0.0, Double.MIN_VALUE};
+
 		pnlMenu.setLayout(gbl_pnlMenu);
 
-		// DRAWING / SELECT
-		JPanel panel1 = new JPanel();
-		panel1.setBackground(new Color(255, 228, 181));
+		/*
+		 * ACTIVE COLORS
+		 */
+		JPanel pnlColors = new JPanel();
 
-		GridBagConstraints gbc_panel1 = new GridBagConstraints();
-		gbc_panel1.fill = GridBagConstraints.BOTH;
-		gbc_panel1.insets = new Insets(0, 0, 5, 0);
-		gbc_panel1.gridx = 0;
-		gbc_panel1.gridy = 0;
-		pnlMenu.add(panel1, gbc_panel1);
+		pnlColors.setBorder(
+				new CompoundBorder(
+						null,
+						new MatteBorder(0, 0, 1, 0, borderColor)));
 
-		GridBagLayout gbl_panel1 = new GridBagLayout();
-		gbl_panel1.columnWidths = new int[] {122, 0};
-		gbl_panel1.rowHeights = new int[] {45, 34, 0};
-		gbl_panel1.columnWeights = new double[] {0.0, Double.MIN_VALUE};
-		gbl_panel1.rowWeights = new double[] {0.0, 0.0, Double.MIN_VALUE};
-		panel1.setLayout(gbl_panel1);
+		pnlColors.setBackground(backgroundColor);
 
-		tglBtnDrawing.setBackground(new Color(250, 250, 210));
-		tglBtnDrawing.setPreferredSize(new Dimension(100, 25));
-		tglBtnDrawing.setForeground(new Color(160, 82, 45));
-		tglBtnDrawing.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnDrawing.setAlignmentX(Component.CENTER_ALIGNMENT);
+		GridBagConstraints gbc_pnlColors =
+				new GridBagConstraints();
 
-		tglBtnDrawing.addActionListener(e -> controller.setOperationDrawing());
+		gbc_pnlColors.fill = GridBagConstraints.BOTH;
+		gbc_pnlColors.insets = new Insets(0, 0, 5, 0);
+		gbc_pnlColors.gridx = 0;
+		gbc_pnlColors.gridy = 0;
+
+		pnlMenu.add(pnlColors, gbc_pnlColors);
+
+		GridBagLayout gbl_pnlColors = new GridBagLayout();
+		gbl_pnlColors.columnWidths = new int[] {150, 0};
+		gbl_pnlColors.rowHeights = new int[] {48, 41, 41, 0};
+		gbl_pnlColors.columnWeights =
+				new double[] {0.0, Double.MIN_VALUE};
+		gbl_pnlColors.rowWeights =
+				new double[] {0.0, 0.0, 0.0, Double.MIN_VALUE};
+
+		pnlColors.setLayout(gbl_pnlColors);
+
+		JLabel lblColors = new JLabel("Active colors");
+		lblColors.setHorizontalAlignment(SwingConstants.CENTER);
+		lblColors.setForeground(textColor);
+		lblColors.setFont(
+				new Font("Californian FB", Font.BOLD, 14));
+
+		GridBagConstraints gbc_lblColors =
+				new GridBagConstraints();
+
+		gbc_lblColors.insets = new Insets(0, 0, 5, 0);
+		gbc_lblColors.gridx = 0;
+		gbc_lblColors.gridy = 0;
+
+		pnlColors.add(lblColors, gbc_lblColors);
+
+		styleButton(tglBtnInsideColor);
+
+		GridBagConstraints gbc_insideColor =
+				new GridBagConstraints();
+
+		gbc_insideColor.insets = new Insets(0, 0, 5, 0);
+		gbc_insideColor.gridx = 0;
+		gbc_insideColor.gridy = 1;
+
+		pnlColors.add(tglBtnInsideColor, gbc_insideColor);
+
+		styleButton(tglBtnOutsideColor);
+
+		GridBagConstraints gbc_outsideColor =
+				new GridBagConstraints();
+
+		gbc_outsideColor.gridx = 0;
+		gbc_outsideColor.gridy = 2;
+
+		pnlColors.add(tglBtnOutsideColor, gbc_outsideColor);
+
+		/*
+		 * SHAPES
+		 */
+		JPanel pnlShapes = new JPanel();
+		pnlShapes.setBackground(backgroundColor);
+
+		GridBagConstraints gbc_pnlShapes =
+				new GridBagConstraints();
+
+		gbc_pnlShapes.fill = GridBagConstraints.BOTH;
+		gbc_pnlShapes.gridx = 0;
+		gbc_pnlShapes.gridy = 1;
+
+		pnlMenu.add(pnlShapes, gbc_pnlShapes);
+
+		GridBagLayout gbl_pnlShapes = new GridBagLayout();
+
+		gbl_pnlShapes.columnWidths = new int[] {150, 0};
+		gbl_pnlShapes.rowHeights =
+				new int[] {27, 31, 31, 31, 31, 31, 31, 0};
+
+		gbl_pnlShapes.columnWeights =
+				new double[] {0.0, Double.MIN_VALUE};
+
+		gbl_pnlShapes.rowWeights =
+				new double[] {
+						0.0, 0.0, 0.0, 0.0,
+						0.0, 0.0, 0.0,
+						Double.MIN_VALUE
+				};
+
+		pnlShapes.setLayout(gbl_pnlShapes);
+
+		JLabel lblShapes = new JLabel("Shapes");
+		lblShapes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblShapes.setForeground(textColor);
+		lblShapes.setFont(
+				new Font("Californian FB", Font.BOLD, 14));
+
+		GridBagConstraints gbc_lblShapes =
+				new GridBagConstraints();
+
+		gbc_lblShapes.insets = new Insets(0, 0, 5, 0);
+		gbc_lblShapes.gridx = 0;
+		gbc_lblShapes.gridy = 0;
+
+		pnlShapes.add(lblShapes, gbc_lblShapes);
+
+		styleButton(tglBtnPoint);
+		btnsShapes.add(tglBtnPoint);
+
+		GridBagConstraints gbc_point =
+				new GridBagConstraints();
+
+		gbc_point.insets = new Insets(0, 0, 5, 0);
+		gbc_point.gridx = 0;
+		gbc_point.gridy = 1;
+
+		pnlShapes.add(tglBtnPoint, gbc_point);
+
+		styleButton(tglBtnLine);
+		btnsShapes.add(tglBtnLine);
+
+		GridBagConstraints gbc_line =
+				new GridBagConstraints();
+
+		gbc_line.insets = new Insets(0, 0, 5, 0);
+		gbc_line.gridx = 0;
+		gbc_line.gridy = 2;
+
+		pnlShapes.add(tglBtnLine, gbc_line);
+
+		styleButton(tglBtnRectangle);
+		btnsShapes.add(tglBtnRectangle);
+
+		GridBagConstraints gbc_rectangle =
+				new GridBagConstraints();
+
+		gbc_rectangle.insets = new Insets(0, 0, 5, 0);
+		gbc_rectangle.gridx = 0;
+		gbc_rectangle.gridy = 3;
+
+		pnlShapes.add(tglBtnRectangle, gbc_rectangle);
+
+		styleButton(tglBtnCircle);
+		btnsShapes.add(tglBtnCircle);
+
+		GridBagConstraints gbc_circle =
+				new GridBagConstraints();
+
+		gbc_circle.insets = new Insets(0, 0, 5, 0);
+		gbc_circle.gridx = 0;
+		gbc_circle.gridy = 4;
+
+		pnlShapes.add(tglBtnCircle, gbc_circle);
+
+		styleButton(tglBtnDonut);
+		btnsShapes.add(tglBtnDonut);
+
+		GridBagConstraints gbc_donut =
+				new GridBagConstraints();
+
+		gbc_donut.insets = new Insets(0, 0, 5, 0);
+		gbc_donut.gridx = 0;
+		gbc_donut.gridy = 5;
+
+		pnlShapes.add(tglBtnDonut, gbc_donut);
+
+		styleButton(tglBtnHexagon);
+		btnsShapes.add(tglBtnHexagon);
+
+		GridBagConstraints gbc_hexagon =
+				new GridBagConstraints();
+
+		gbc_hexagon.gridx = 0;
+		gbc_hexagon.gridy = 6;
+
+		pnlShapes.add(tglBtnHexagon, gbc_hexagon);
+
+		/*
+		 * TOP PANEL
+		 */
+		JPanel panelNorth = new JPanel();
+
+		panelNorth.setBorder(
+				new CompoundBorder(
+						null,
+						new MatteBorder(0, 0, 1, 0, borderColor)));
+
+		panelNorth.setPreferredSize(new Dimension(50, 50));
+		panelNorth.setBackground(backgroundColor);
+
+		contentPane.add(panelNorth, BorderLayout.NORTH);
+
+		GridBagLayout gbl_panelNorth = new GridBagLayout();
+
+		gbl_panelNorth.columnWidths =
+				new int[] {579, 24, 523, 0};
+
+		gbl_panelNorth.rowHeights =
+				new int[] {50, 0};
+
+		gbl_panelNorth.columnWeights =
+				new double[] {1.0, 0.0, 1.0, Double.MIN_VALUE};
+
+		gbl_panelNorth.rowWeights =
+				new double[] {1.0, Double.MIN_VALUE};
+
+		panelNorth.setLayout(gbl_panelNorth);
+
+		/*
+		 * TOP LEFT COMMANDS
+		 */
+		JPanel pnlMainCommands = new JPanel();
+		pnlMainCommands.setBackground(backgroundColor);
+
+		GridBagConstraints gbc_mainCommands =
+				new GridBagConstraints();
+
+		gbc_mainCommands.insets = new Insets(0, 0, 0, 5);
+		gbc_mainCommands.gridx = 0;
+		gbc_mainCommands.gridy = 0;
+
+		panelNorth.add(pnlMainCommands, gbc_mainCommands);
+
+		GridBagLayout gbl_mainCommands = new GridBagLayout();
+
+		gbl_mainCommands.columnWidths =
+				new int[] {160, 144, 144, 144, 0};
+
+		gbl_mainCommands.rowHeights =
+				new int[] {50, 0};
+
+		gbl_mainCommands.columnWeights =
+				new double[] {
+						1.0, 1.0, 1.0, 1.0,
+						Double.MIN_VALUE
+				};
+
+		gbl_mainCommands.rowWeights =
+				new double[] {1.0, Double.MIN_VALUE};
+
+		pnlMainCommands.setLayout(gbl_mainCommands);
+
+		styleButton(tglBtnDrawing);
+
+		tglBtnDrawing.addActionListener(
+				e -> controller.setOperationDrawing());
 
 		btnsOperation.add(tglBtnDrawing);
-
-		GridBagConstraints gbc_tglBtnDrawing = new GridBagConstraints();
-		gbc_tglBtnDrawing.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnDrawing.gridx = 0;
-		gbc_tglBtnDrawing.gridy = 0;
-		panel1.add(tglBtnDrawing, gbc_tglBtnDrawing);
-
 		tglBtnDrawing.setSelected(true);
 
-		tglBtnModifyOrDelete.setBackground(new Color(250, 250, 210));
-		tglBtnModifyOrDelete.setPreferredSize(new Dimension(100, 25));
-		tglBtnModifyOrDelete.setForeground(new Color(160, 82, 45));
-		tglBtnModifyOrDelete.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnModifyOrDelete.setAlignmentX(Component.CENTER_ALIGNMENT);
+		GridBagConstraints gbc_drawing =
+				new GridBagConstraints();
 
-		tglBtnModifyOrDelete.addActionListener(e -> controller.setOperationEditDelete());
+		gbc_drawing.insets = new Insets(0, 0, 0, 5);
+		gbc_drawing.gridx = 0;
+		gbc_drawing.gridy = 0;
+
+		pnlMainCommands.add(tglBtnDrawing, gbc_drawing);
+
+		styleButton(tglBtnModifyOrDelete);
+
+		tglBtnModifyOrDelete.addActionListener(
+				e -> controller.setOperationEditDelete());
 
 		btnsOperation.add(tglBtnModifyOrDelete);
 
-		GridBagConstraints gbc_tglBtnModifyOrDelete = new GridBagConstraints();
-		gbc_tglBtnModifyOrDelete.gridx = 0;
-		gbc_tglBtnModifyOrDelete.gridy = 1;
-		panel1.add(tglBtnModifyOrDelete, gbc_tglBtnModifyOrDelete);
+		GridBagConstraints gbc_select =
+				new GridBagConstraints();
 
-		// MODIFY / DELETE
-		JPanel panel2 = new JPanel();
-		panel2.setBackground(new Color(255, 228, 181));
+		gbc_select.insets = new Insets(0, 0, 0, 5);
+		gbc_select.gridx = 1;
+		gbc_select.gridy = 0;
 
-		GridBagConstraints gbc_panel2 = new GridBagConstraints();
-		gbc_panel2.fill = GridBagConstraints.BOTH;
-		gbc_panel2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel2.gridx = 0;
-		gbc_panel2.gridy = 1;
-		pnlMenu.add(panel2, gbc_panel2);
+		pnlMainCommands.add(
+				tglBtnModifyOrDelete,
+				gbc_select);
 
-		GridBagLayout gbl_panel2 = new GridBagLayout();
-		gbl_panel2.columnWidths = new int[] {118, 0};
-		gbl_panel2.rowHeights = new int[] {48, 41, 0};
-		gbl_panel2.columnWeights = new double[] {0.0, Double.MIN_VALUE};
-		gbl_panel2.rowWeights = new double[] {0.0, 0.0, Double.MIN_VALUE};
-		panel2.setLayout(gbl_panel2);
+		styleButton(tglBtnModify);
 
-		tglBtnModify.setBackground(new Color(250, 250, 210));
-		tglBtnModify.setPreferredSize(new Dimension(100, 25));
-		tglBtnModify.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnModify.setForeground(new Color(160, 82, 45));
-		tglBtnModify.setAlignmentX(Component.CENTER_ALIGNMENT);
+		GridBagConstraints gbc_modify =
+				new GridBagConstraints();
 
-		GridBagConstraints gbc_tglBtnModify = new GridBagConstraints();
-		gbc_tglBtnModify.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnModify.gridx = 0;
-		gbc_tglBtnModify.gridy = 0;
-		panel2.add(tglBtnModify, gbc_tglBtnModify);
+		gbc_modify.insets = new Insets(0, 0, 0, 5);
+		gbc_modify.gridx = 2;
+		gbc_modify.gridy = 0;
 
-		tglBtnDelete.setBackground(new Color(250, 250, 210));
-		tglBtnDelete.setPreferredSize(new Dimension(100, 25));
-		tglBtnDelete.setForeground(new Color(160, 82, 45));
-		tglBtnDelete.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnDelete.setAlignmentX(Component.CENTER_ALIGNMENT);
+		pnlMainCommands.add(tglBtnModify, gbc_modify);
 
-		GridBagConstraints gbc_tglBtnDelete = new GridBagConstraints();
-		gbc_tglBtnDelete.gridx = 0;
-		gbc_tglBtnDelete.gridy = 1;
-		panel2.add(tglBtnDelete, gbc_tglBtnDelete);
+		styleButton(tglBtnDelete);
 
-		// SHAPES
-		JPanel panel3 = new JPanel();
-		panel3.setBackground(new Color(255, 228, 181));
+		GridBagConstraints gbc_delete =
+				new GridBagConstraints();
 
-		GridBagConstraints gbc_panel3 = new GridBagConstraints();
-		gbc_panel3.fill = GridBagConstraints.BOTH;
-		gbc_panel3.gridx = 0;
-		gbc_panel3.gridy = 2;
-		pnlMenu.add(panel3, gbc_panel3);
+		gbc_delete.gridx = 3;
+		gbc_delete.gridy = 0;
 
-		GridBagLayout gbl_panel3 = new GridBagLayout();
-		gbl_panel3.columnWidths = new int[] {119, 0};
-		gbl_panel3.rowHeights = new int[] {27, 31, 28, 27, 30, 0};
-		gbl_panel3.columnWeights = new double[] {0.0, Double.MIN_VALUE};
-		gbl_panel3.rowWeights = new double[] {
-				0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE
-		};
-		panel3.setLayout(gbl_panel3);
+		pnlMainCommands.add(tglBtnDelete, gbc_delete);
 
-		tglBtnPoint.setBackground(new Color(250, 250, 210));
-		tglBtnPoint.setPreferredSize(new Dimension(100, 25));
-		tglBtnPoint.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnPoint.setForeground(new Color(160, 82, 45));
+		/*
+		 * TOP RIGHT COMMANDS
+		 */
+		JPanel pnlHistory = new JPanel();
 
-		btnsShapes.add(tglBtnPoint);
+		pnlHistory.setBorder(
+				new CompoundBorder(
+						null,
+						new MatteBorder(0, 1, 0, 0, borderColor)));
 
-		GridBagConstraints gbc_tglBtnPoint = new GridBagConstraints();
-		gbc_tglBtnPoint.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnPoint.gridx = 0;
-		gbc_tglBtnPoint.gridy = 0;
-		panel3.add(tglBtnPoint, gbc_tglBtnPoint);
+		pnlHistory.setBackground(backgroundColor);
 
-		tglBtnLine.setBackground(new Color(250, 250, 210));
-		tglBtnLine.setPreferredSize(new Dimension(100, 25));
-		tglBtnLine.setForeground(new Color(160, 82, 45));
-		tglBtnLine.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnLine.setAlignmentX(Component.CENTER_ALIGNMENT);
+		GridBagConstraints gbc_history =
+				new GridBagConstraints();
 
-		btnsShapes.add(tglBtnLine);
+		gbc_history.gridx = 2;
+		gbc_history.gridy = 0;
 
-		GridBagConstraints gbc_tglBtnLine = new GridBagConstraints();
-		gbc_tglBtnLine.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnLine.gridx = 0;
-		gbc_tglBtnLine.gridy = 1;
-		panel3.add(tglBtnLine, gbc_tglBtnLine);
+		panelNorth.add(pnlHistory, gbc_history);
 
-		tglBtnRectangle.setBackground(new Color(250, 250, 210));
-		tglBtnRectangle.setPreferredSize(new Dimension(100, 25));
-		tglBtnRectangle.setForeground(new Color(160, 82, 45));
-		tglBtnRectangle.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnRectangle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		GridBagLayout gbl_history = new GridBagLayout();
 
-		btnsShapes.add(tglBtnRectangle);
+		gbl_history.columnWidths =
+				new int[] {27, 154, 108, 45, 138, 0};
 
-		GridBagConstraints gbc_tglBtnRectangle = new GridBagConstraints();
-		gbc_tglBtnRectangle.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnRectangle.gridx = 0;
-		gbc_tglBtnRectangle.gridy = 2;
-		panel3.add(tglBtnRectangle, gbc_tglBtnRectangle);
+		gbl_history.rowHeights =
+				new int[] {50, 0};
 
-		tglBtnCircle.setBackground(new Color(250, 250, 210));
-		tglBtnCircle.setPreferredSize(new Dimension(100, 25));
-		tglBtnCircle.setForeground(new Color(160, 82, 45));
-		tglBtnCircle.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnCircle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		gbl_history.columnWeights =
+				new double[] {
+						0.0, 1.0, 1.0,
+						0.0, 1.0,
+						Double.MIN_VALUE
+				};
 
-		btnsShapes.add(tglBtnCircle);
+		gbl_history.rowWeights =
+				new double[] {1.0, Double.MIN_VALUE};
 
-		GridBagConstraints gbc_tglBtnCircle = new GridBagConstraints();
-		gbc_tglBtnCircle.insets = new Insets(0, 0, 5, 0);
-		gbc_tglBtnCircle.gridx = 0;
-		gbc_tglBtnCircle.gridy = 3;
-		panel3.add(tglBtnCircle, gbc_tglBtnCircle);
+		pnlHistory.setLayout(gbl_history);
 
-		tglBtnDonut.setBackground(new Color(250, 250, 210));
-		tglBtnDonut.setPreferredSize(new Dimension(100, 25));
-		tglBtnDonut.setFont(new Font("Javanese Text", Font.PLAIN, 12));
-		tglBtnDonut.setForeground(new Color(160, 82, 45));
-		tglBtnDonut.setAlignmentX(Component.CENTER_ALIGNMENT);
+		styleButton(tglBtnUndo);
 
-		btnsShapes.add(tglBtnDonut);
+		GridBagConstraints gbc_undo =
+				new GridBagConstraints();
 
-		GridBagConstraints gbc_tglBtnDonut = new GridBagConstraints();
-		gbc_tglBtnDonut.gridx = 0;
-		gbc_tglBtnDonut.gridy = 4;
-		panel3.add(tglBtnDonut, gbc_tglBtnDonut);
+		gbc_undo.insets = new Insets(0, 0, 0, 5);
+		gbc_undo.gridx = 1;
+		gbc_undo.gridy = 0;
 
+		pnlHistory.add(tglBtnUndo, gbc_undo);
+
+		styleButton(tglBtnRedo);
+
+		GridBagConstraints gbc_redo =
+				new GridBagConstraints();
+
+		gbc_redo.insets = new Insets(0, 0, 0, 5);
+		gbc_redo.gridx = 2;
+		gbc_redo.gridy = 0;
+
+		pnlHistory.add(tglBtnRedo, gbc_redo);
+
+		styleButton(tglBtnLoadNext);
+
+		GridBagConstraints gbc_loadNext =
+				new GridBagConstraints();
+
+		gbc_loadNext.gridx = 4;
+		gbc_loadNext.gridy = 0;
+
+		pnlHistory.add(tglBtnLoadNext, gbc_loadNext);
+
+		/*
+		 * RIGHT PANEL - Z ORDER
+		 */
+		JPanel pnlRight = new JPanel();
+
+		pnlRight.setPreferredSize(new Dimension(150, 10));
+		pnlRight.setMinimumSize(new Dimension(150, 10));
+
+		pnlRight.setBorder(
+				new CompoundBorder(
+						null,
+						new MatteBorder(0, 1, 0, 0, borderColor)));
+
+		pnlRight.setBackground(backgroundColor);
+
+		contentPane.add(pnlRight, BorderLayout.EAST);
+
+		GridBagLayout gbl_right = new GridBagLayout();
+
+		gbl_right.columnWidths =
+				new int[] {149, 0};
+
+		gbl_right.rowHeights =
+				new int[] {80, 40, 40, 40, 40, 0};
+
+		gbl_right.columnWeights =
+				new double[] {0.0, Double.MIN_VALUE};
+
+		gbl_right.rowWeights =
+				new double[] {
+						0.0, 0.0, 0.0,
+						0.0, 0.0,
+						Double.MIN_VALUE
+				};
+
+		pnlRight.setLayout(gbl_right);
+
+		JLabel lblZOrder = new JLabel("Z order");
+
+		lblZOrder.setForeground(textColor);
+		lblZOrder.setFont(
+				new Font("Californian FB", Font.BOLD, 14));
+
+		GridBagConstraints gbc_zLabel =
+				new GridBagConstraints();
+
+		gbc_zLabel.gridx = 0;
+		gbc_zLabel.gridy = 0;
+
+		pnlRight.add(lblZOrder, gbc_zLabel);
+
+		styleButton(tglBtnToFront);
+
+		GridBagConstraints gbc_toFront =
+				new GridBagConstraints();
+
+		gbc_toFront.insets = new Insets(0, 0, 5, 0);
+		gbc_toFront.gridx = 0;
+		gbc_toFront.gridy = 1;
+
+		pnlRight.add(tglBtnToFront, gbc_toFront);
+
+		styleButton(tglBtnToBack);
+
+		GridBagConstraints gbc_toBack =
+				new GridBagConstraints();
+
+		gbc_toBack.insets = new Insets(0, 0, 5, 0);
+		gbc_toBack.gridx = 0;
+		gbc_toBack.gridy = 2;
+
+		pnlRight.add(tglBtnToBack, gbc_toBack);
+
+		styleButton(tglBtnBringToFront);
+
+		GridBagConstraints gbc_bringToFront =
+				new GridBagConstraints();
+
+		gbc_bringToFront.insets = new Insets(0, 0, 5, 0);
+		gbc_bringToFront.gridx = 0;
+		gbc_bringToFront.gridy = 3;
+
+		pnlRight.add(
+				tglBtnBringToFront,
+				gbc_bringToFront);
+
+		styleButton(tglBtnBringToBack);
+
+		GridBagConstraints gbc_bringToBack =
+				new GridBagConstraints();
+
+		gbc_bringToBack.gridx = 0;
+		gbc_bringToBack.gridy = 4;
+
+		pnlRight.add(
+				tglBtnBringToBack,
+				gbc_bringToBack);
+
+		/*
+		 * LOG
+		 */
+		scrollPane.setPreferredSize(
+				new Dimension(1085, 150));
+
+		scrollPane.setFont(
+				new Font("Californian FB", Font.BOLD, 14));
+
+		contentPane.add(scrollPane, BorderLayout.SOUTH);
+
+		JPanel pnlLog = new JPanel();
+		pnlLog.setBackground(Color.WHITE);
+		pnlLog.setLayout(new BorderLayout());
+
+		scrollPane.setViewportView(pnlLog);
+
+		lblLog.setHorizontalAlignment(
+				SwingConstants.CENTER);
+
+		lblLog.setFont(
+				new Font("Californian FB", Font.BOLD, 14));
+
+		lblLog.setForeground(textColor);
+
+		lblLog.setPreferredSize(
+				new Dimension(1085, 25));
+
+		pnlLog.add(lblLog, BorderLayout.NORTH);
+
+		textArea.setFont(
+				new Font("Californian FB", Font.PLAIN, 14));
+
+		textArea.setEditable(false);
+
+		pnlLog.add(textArea, BorderLayout.CENTER);
+
+		/*
+		 * INITIAL STATE
+		 */
 		tglBtnModify.setEnabled(false);
 		tglBtnDelete.setEnabled(false);
+
+		tglBtnUndo.setEnabled(false);
+		tglBtnRedo.setEnabled(false);
+		tglBtnLoadNext.setEnabled(false);
+
+		tglBtnToFront.setEnabled(false);
+		tglBtnToBack.setEnabled(false);
+		tglBtnBringToFront.setEnabled(false);
+		tglBtnBringToBack.setEnabled(false);
+
+		/*
+		 * Hexagon jos nismo implementirali.
+		 */
+		tglBtnHexagon.setEnabled(false);
+	}
+
+	private void styleButton(Component component) {
+
+		if (component instanceof javax.swing.AbstractButton) {
+
+			javax.swing.AbstractButton button =
+					(javax.swing.AbstractButton) component;
+
+			button.setBorder(
+					new LineBorder(borderColor));
+
+			button.setMinimumSize(
+					new Dimension(125, 30));
+
+			button.setPreferredSize(
+					new Dimension(125, 30));
+
+			button.setBackground(Color.WHITE);
+			button.setForeground(textColor);
+
+			button.setFont(
+					new Font(
+							"Californian FB",
+							Font.BOLD,
+							14));
+
+			button.setAlignmentX(
+					Component.CENTER_ALIGNMENT);
+		}
 	}
 
 	public DrawingController getController() {
 		return controller;
 	}
 
-	public void setController(DrawingController controller) {
+	public void setController(
+			DrawingController controller) {
 		this.controller = controller;
 	}
 
@@ -303,5 +729,49 @@ public class DrawingFrame extends JFrame {
 
 	public JToggleButton getTglBtnDonut() {
 		return tglBtnDonut;
+	}
+
+	public JToggleButton getTglBtnHexagon() {
+		return tglBtnHexagon;
+	}
+
+	public JToggleButton getTglBtnInsideColor() {
+		return tglBtnInsideColor;
+	}
+
+	public JToggleButton getTglBtnOutsideColor() {
+		return tglBtnOutsideColor;
+	}
+
+	public JToggleButton getTglBtnUndo() {
+		return tglBtnUndo;
+	}
+
+	public JToggleButton getTglBtnRedo() {
+		return tglBtnRedo;
+	}
+
+	public JToggleButton getTglBtnLoadNext() {
+		return tglBtnLoadNext;
+	}
+
+	public JToggleButton getTglBtnToFront() {
+		return tglBtnToFront;
+	}
+
+	public JToggleButton getTglBtnToBack() {
+		return tglBtnToBack;
+	}
+
+	public JToggleButton getTglBtnBringToFront() {
+		return tglBtnBringToFront;
+	}
+
+	public JToggleButton getTglBtnBringToBack() {
+		return tglBtnBringToBack;
+	}
+
+	public JTextArea getTextArea() {
+		return textArea;
 	}
 }
