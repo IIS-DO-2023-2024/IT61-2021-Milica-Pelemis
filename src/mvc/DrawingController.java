@@ -29,6 +29,10 @@ import command.AddShapeCommand;
 import command.CommandManager;
 import command.ModifyShapeCommand;
 import command.DeleteShapeCommand;
+import command.ToFrontCommand;
+import command.ToBackCommand;
+import command.BringToFrontCommand;
+import command.BringToBackCommand;
 
 public class DrawingController {
 
@@ -67,6 +71,14 @@ public class DrawingController {
 		frame.getTglBtnUndo().addActionListener(e -> undo());
 
 		frame.getTglBtnRedo().addActionListener(e -> redo());
+
+		frame.getTglBtnToFront().addActionListener(e -> moveToFront());
+
+		frame.getTglBtnToBack().addActionListener(e -> moveToBack());
+
+		frame.getTglBtnBringToFront().addActionListener(e -> bringToFront());
+
+		frame.getTglBtnBringToBack().addActionListener(e -> bringToBack());
 
 		this.frame.getView().addMouseListener(new MouseAdapter() {
 			@Override
@@ -256,6 +268,30 @@ public class DrawingController {
 		}
 
 		selectionSubject.setSelectedCount(selectedCount);
+
+		if (selectedCount == 1) {
+
+			int selectedIndex = getSelectedShapeIndex();
+
+			frame.getTglBtnToFront().setEnabled(
+					selectedIndex < model.size() - 1);
+
+			frame.getTglBtnToBack().setEnabled(
+					selectedIndex > 0);
+
+			frame.getTglBtnBringToFront().setEnabled(
+					selectedIndex < model.size() - 1);
+
+			frame.getTglBtnBringToBack().setEnabled(
+					selectedIndex > 0);
+		}
+		else {
+
+			frame.getTglBtnToFront().setEnabled(false);
+			frame.getTglBtnToBack().setEnabled(false);
+			frame.getTglBtnBringToFront().setEnabled(false);
+			frame.getTglBtnBringToBack().setEnabled(false);
+		}
 	}
 
 
@@ -298,6 +334,110 @@ public class DrawingController {
 		updateRedoButton();
 
 		frame.getTglBtnRedo().setSelected(false);
+
+		frame.getView().repaint();
+	}
+
+
+	private void moveToFront() {
+
+		int index = getSelectedShapeIndex();
+
+		if (index == -1 || index == model.size() - 1) {
+
+			frame.getTglBtnToFront().setSelected(false);
+			return;
+		}
+
+		commandManager.executeCommand(
+				new ToFrontCommand(
+						model,
+						index));
+
+		updateSelectionState();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnToFront().setSelected(false);
+
+		frame.getView().repaint();
+	}
+
+
+	private void moveToBack() {
+
+		int index = getSelectedShapeIndex();
+
+		if (index == -1 || index == 0) {
+
+			frame.getTglBtnToBack().setSelected(false);
+			return;
+		}
+
+		commandManager.executeCommand(
+				new ToBackCommand(
+						model,
+						index));
+
+		updateSelectionState();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnToBack().setSelected(false);
+
+		frame.getView().repaint();
+	}
+
+
+	private void bringToFront() {
+
+		int index = getSelectedShapeIndex();
+
+		if (index == -1 || index == model.size() - 1) {
+
+			frame.getTglBtnBringToFront().setSelected(false);
+			return;
+		}
+
+		commandManager.executeCommand(
+				new BringToFrontCommand(
+						model,
+						index));
+
+		updateSelectionState();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnBringToFront().setSelected(false);
+
+		frame.getView().repaint();
+	}
+
+
+	private void bringToBack() {
+
+		int index = getSelectedShapeIndex();
+
+		if (index == -1 || index == 0) {
+
+			frame.getTglBtnBringToBack().setSelected(false);
+			return;
+		}
+
+		commandManager.executeCommand(
+				new BringToBackCommand(
+						model,
+						index));
+
+		updateSelectionState();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnBringToBack().setSelected(false);
 
 		frame.getView().repaint();
 	}
@@ -527,6 +667,11 @@ public class DrawingController {
 		frame.getTglBtnModify().setEnabled(false);
 		frame.getTglBtnDelete().setEnabled(false);
 
+		frame.getTglBtnToFront().setEnabled(false);
+		frame.getTglBtnToBack().setEnabled(false);
+		frame.getTglBtnBringToFront().setEnabled(false);
+		frame.getTglBtnBringToBack().setEnabled(false);
+
 		frame.getTglBtnPoint().setEnabled(true);
 		frame.getTglBtnLine().setEnabled(true);
 		frame.getTglBtnRectangle().setEnabled(true);
@@ -543,6 +688,11 @@ public class DrawingController {
 
 		frame.getTglBtnModify().setEnabled(false);
 		frame.getTglBtnDelete().setEnabled(false);
+
+		frame.getTglBtnToFront().setEnabled(false);
+		frame.getTglBtnToBack().setEnabled(false);
+		frame.getTglBtnBringToFront().setEnabled(false);
+		frame.getTglBtnBringToBack().setEnabled(false);
 
 		frame.getTglBtnPoint().setEnabled(false);
 		frame.getTglBtnLine().setEnabled(false);
