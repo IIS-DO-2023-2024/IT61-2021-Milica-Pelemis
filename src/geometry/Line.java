@@ -115,4 +115,20 @@ public class Line extends Shape{
 		return 0;
 	}
 	
+	@Override
+	public Shape clone() {
+		// TODO Auto-generated method stub
+		
+		Point clonedStartPoint = (Point) this.startPoint.clone();
+		Point clonedEndPoint = (Point) this.endPoint.clone();
+
+		Line clonedLine = new Line(
+				clonedStartPoint,
+				clonedEndPoint,
+				this.isSelected(),
+				this.getColor());
+
+		return clonedLine;
+	}
+	
 }

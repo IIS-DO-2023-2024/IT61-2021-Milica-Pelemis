@@ -206,4 +206,21 @@ public class Donut extends Circle {
 
 		return 0;
 	}
+	
+	
+	@Override
+	public Shape clone() {
+
+		Point clonedCenter = (Point) this.getCenter().clone();
+
+		Donut clonedDonut = new Donut(
+				clonedCenter,
+				this.getRadius(),
+				this.innerRadius,
+				this.isSelected(),
+				this.getColor(),
+				this.getInnerColor());
+
+		return clonedDonut;
+	}
 }

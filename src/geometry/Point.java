@@ -141,6 +141,21 @@ public class Point extends Shape{
 		return 0;
 	}
 
+	@Override
+	public Shape clone() {
+		// TODO Auto-generated method stub
+		
+		Point clonedPoint = new Point(
+				this.getX(),
+				this.getY(),
+				this.isSelected(),
+				this.getColor());
+
+		return clonedPoint;
+	}
+
+	
+	
 	
 }
 

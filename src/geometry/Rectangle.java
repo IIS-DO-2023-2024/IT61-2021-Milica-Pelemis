@@ -145,6 +145,23 @@ public class Rectangle extends SurfaceShapes {
 		return 0;
 	}
 	
+	@Override
+	public Shape clone() {
+		// TODO Auto-generated method stub
+		
+		Point clonedUpperLeft = (Point) this.upperLeft.clone();
+
+		Rectangle clonedRectangle = new Rectangle(
+				clonedUpperLeft,
+				this.width,
+				this.height,
+				this.isSelected(),
+				this.getColor(),
+				this.getInnerColor());
+
+		return clonedRectangle;
+	}
+	
 	
 	
 }

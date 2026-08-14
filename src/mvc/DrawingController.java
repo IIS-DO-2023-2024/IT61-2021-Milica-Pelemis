@@ -27,6 +27,8 @@ import observer.SelectionSubject;
 
 import command.AddShapeCommand;
 import command.CommandManager;
+import command.ModifyShapeCommand;
+import command.DeleteShapeCommand;
 
 public class DrawingController {
 
@@ -275,6 +277,8 @@ public class DrawingController {
 
 		commandManager.undo();
 
+		updateSelectionState();
+
 		updateUndoButton();
 		updateRedoButton();
 
@@ -287,6 +291,8 @@ public class DrawingController {
 	private void redo() {
 
 		commandManager.redo();
+
+		updateSelectionState();
 
 		updateUndoButton();
 		updateRedoButton();
@@ -322,6 +328,8 @@ public class DrawingController {
 
 		if (shape instanceof Point) {
 
+			Point oldPoint = (Point) shape.clone();
+
 			DlgPoint dlgPoint = new DlgPoint();
 
 			dlgPoint.setPoint((Point) shape);
@@ -331,15 +339,25 @@ public class DrawingController {
 
 				dlgPoint.getPoint().setSelected(true);
 
-				model.set(index, dlgPoint.getPoint());
+				commandManager.executeCommand(
+						new ModifyShapeCommand(
+								model,
+								oldPoint,
+								dlgPoint.getPoint(),
+								index));
 
 				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
 
 				frame.getView().repaint();
 			}
 		}
 
 		else if (shape instanceof Line) {
+
+			Line oldLine = (Line) shape.clone();
 
 			DlgLine dlgLine = new DlgLine();
 
@@ -350,15 +368,25 @@ public class DrawingController {
 
 				dlgLine.getLine().setSelected(true);
 
-				model.set(index, dlgLine.getLine());
+				commandManager.executeCommand(
+						new ModifyShapeCommand(
+								model,
+								oldLine,
+								dlgLine.getLine(),
+								index));
 
 				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
 
 				frame.getView().repaint();
 			}
 		}
 
 		else if (shape instanceof Rectangle) {
+
+			Rectangle oldRectangle = (Rectangle) shape.clone();
 
 			DlgRectangle dlgRectangle = new DlgRectangle();
 
@@ -369,15 +397,25 @@ public class DrawingController {
 
 				dlgRectangle.getRectangle().setSelected(true);
 
-				model.set(index, dlgRectangle.getRectangle());
+				commandManager.executeCommand(
+						new ModifyShapeCommand(
+								model,
+								oldRectangle,
+								dlgRectangle.getRectangle(),
+								index));
 
 				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
 
 				frame.getView().repaint();
 			}
 		}
 
 		else if (shape instanceof Donut) {
+
+			Donut oldDonut = (Donut) shape.clone();
 
 			DlgDonut dlgDonut = new DlgDonut();
 
@@ -388,15 +426,25 @@ public class DrawingController {
 
 				dlgDonut.getDonut().setSelected(true);
 
-				model.set(index, dlgDonut.getDonut());
+				commandManager.executeCommand(
+						new ModifyShapeCommand(
+								model,
+								oldDonut,
+								dlgDonut.getDonut(),
+								index));
 
 				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
 
 				frame.getView().repaint();
 			}
 		}
 
 		else if (shape instanceof Circle) {
+
+			Circle oldCircle = (Circle) shape.clone();
 
 			DlgCircle dlgCircle = new DlgCircle();
 
@@ -407,9 +455,17 @@ public class DrawingController {
 
 				dlgCircle.getCircle().setSelected(true);
 
-				model.set(index, dlgCircle.getCircle());
+				commandManager.executeCommand(
+						new ModifyShapeCommand(
+								model,
+								oldCircle,
+								dlgCircle.getCircle(),
+								index));
 
 				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
 
 				frame.getView().repaint();
 			}
@@ -419,17 +475,19 @@ public class DrawingController {
 
 	private void deleteSelectedShapes() {
 
-		boolean hasSelectedShapes = false;
+		List<Shape> selectedShapes = new ArrayList<Shape>();
+		List<Integer> selectedIndexes = new ArrayList<Integer>();
 
-		for (Shape shape : model.getShapes()) {
+		for (int i = 0; i < model.size(); i++) {
 
-			if (shape.isSelected()) {
-				hasSelectedShapes = true;
-				break;
+			if (model.get(i).isSelected()) {
+
+				selectedShapes.add(model.get(i));
+				selectedIndexes.add(i);
 			}
 		}
 
-		if (!hasSelectedShapes) {
+		if (selectedShapes.isEmpty()) {
 			return;
 		}
 
@@ -442,14 +500,16 @@ public class DrawingController {
 
 		if (option == JOptionPane.YES_OPTION) {
 
-			for (int i = model.size() - 1; i >= 0; i--) {
-
-				if (model.get(i).isSelected()) {
-					model.remove(i);
-				}
-			}
+			commandManager.executeCommand(
+					new DeleteShapeCommand(
+							model,
+							selectedShapes,
+							selectedIndexes));
 
 			updateSelectionState();
+
+			updateUndoButton();
+			updateRedoButton();
 
 			frame.getView().repaint();
 		}

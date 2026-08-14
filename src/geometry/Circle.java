@@ -136,5 +136,22 @@ public class Circle extends SurfaceShapes{
 	}
 	
 	
+	@Override
+	public Shape clone() {
+		// TODO Auto-generated method stub
+		
+		Point clonedCenter = (Point) this.center.clone();
+
+		Circle clonedCircle = new Circle(
+				clonedCenter,
+				this.radius,
+				this.isSelected(),
+				this.getColor(),
+				this.getInnerColor());
+
+		return clonedCircle;
+	}
+	
+	
 	
 }
