@@ -25,6 +25,9 @@ import geometry.Shape;
 import observer.SelectionButtonsObserver;
 import observer.SelectionSubject;
 
+import command.AddShapeCommand;
+import command.CommandManager;
+
 public class DrawingController {
 
 	private final DrawingModel model;
@@ -43,6 +46,8 @@ public class DrawingController {
 
 	private SelectionSubject selectionSubject = new SelectionSubject();
 
+	private CommandManager commandManager = new CommandManager();
+
 	public DrawingController(DrawingModel model, DrawingFrame frame)
 	{
 		this.model = model;
@@ -57,12 +62,19 @@ public class DrawingController {
 
 		frame.getTglBtnDelete().addActionListener(e -> deleteSelectedShapes());
 
+		frame.getTglBtnUndo().addActionListener(e -> undo());
+
+		frame.getTglBtnRedo().addActionListener(e -> redo());
+
 		this.frame.getView().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				onClick(e.getX(), e.getY());
 			}
 		});
+
+		updateUndoButton();
+		updateRedoButton();
 	}
 
 
@@ -106,7 +118,15 @@ public class DrawingController {
 			dlgPoint.setVisible(true);
 
 			if (dlgPoint.getPoint() != null) {
-				model.add(dlgPoint.getPoint());
+
+				commandManager.executeCommand(
+						new AddShapeCommand(
+								model,
+								dlgPoint.getPoint()));
+
+				updateUndoButton();
+				updateRedoButton();
+
 				frame.getView().repaint();
 			}
 
@@ -126,7 +146,15 @@ public class DrawingController {
 				dlgLine.setVisible(true);
 
 				if (dlgLine.getLine() != null) {
-					model.add(dlgLine.getLine());
+
+					commandManager.executeCommand(
+							new AddShapeCommand(
+									model,
+									dlgLine.getLine()));
+
+					updateUndoButton();
+					updateRedoButton();
+
 					frame.getView().repaint();
 				}
 
@@ -148,7 +176,15 @@ public class DrawingController {
 			dlgRectangle.setVisible(true);
 
 			if (dlgRectangle.getRectangle() != null) {
-				model.add(dlgRectangle.getRectangle());
+
+				commandManager.executeCommand(
+						new AddShapeCommand(
+								model,
+								dlgRectangle.getRectangle()));
+
+				updateUndoButton();
+				updateRedoButton();
+
 				frame.getView().repaint();
 			}
 
@@ -165,7 +201,15 @@ public class DrawingController {
 			dlgCircle.setVisible(true);
 
 			if (dlgCircle.getCircle() != null) {
-				model.add(dlgCircle.getCircle());
+
+				commandManager.executeCommand(
+						new AddShapeCommand(
+								model,
+								dlgCircle.getCircle()));
+
+				updateUndoButton();
+				updateRedoButton();
+
 				frame.getView().repaint();
 			}
 
@@ -181,7 +225,15 @@ public class DrawingController {
 			dlgDonut.setVisible(true);
 
 			if (dlgDonut.getDonut() != null) {
-				model.add(dlgDonut.getDonut());
+
+				commandManager.executeCommand(
+						new AddShapeCommand(
+								model,
+								dlgDonut.getDonut()));
+
+				updateUndoButton();
+				updateRedoButton();
+
 				frame.getView().repaint();
 			}
 
@@ -202,6 +254,46 @@ public class DrawingController {
 		}
 
 		selectionSubject.setSelectedCount(selectedCount);
+	}
+
+
+	private void updateUndoButton() {
+
+		frame.getTglBtnUndo().setEnabled(
+				commandManager.canUndo());
+	}
+
+
+	private void updateRedoButton() {
+
+		frame.getTglBtnRedo().setEnabled(
+				commandManager.canRedo());
+	}
+
+
+	private void undo() {
+
+		commandManager.undo();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnUndo().setSelected(false);
+
+		frame.getView().repaint();
+	}
+
+
+	private void redo() {
+
+		commandManager.redo();
+
+		updateUndoButton();
+		updateRedoButton();
+
+		frame.getTglBtnRedo().setSelected(false);
+
+		frame.getView().repaint();
 	}
 
 
