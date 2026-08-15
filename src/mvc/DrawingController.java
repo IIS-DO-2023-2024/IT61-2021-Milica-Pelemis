@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ import strategy.DrawingSaveStrategy;
 import strategy.LogSaveStrategy;
 import strategy.SaveContext;
 import command.ShapeLogFormatter;
+import command.ShapeLogParser;
 
 public class DrawingController {
 
@@ -66,6 +69,9 @@ public class DrawingController {
 	private SelectionSubject selectionSubject = new SelectionSubject();
 
 	private CommandManager commandManager = new CommandManager();
+
+	private List<String> loadedLogLines = new ArrayList<String>();
+	private int loadedLogIndex = 0;
 
 	public DrawingController(DrawingModel model, DrawingFrame frame)
 	{
@@ -102,6 +108,10 @@ public class DrawingController {
 		frame.getMntmSaveDrawing().addActionListener(e -> saveDrawing());
 
 		frame.getMntmLoadDrawing().addActionListener(e -> loadDrawing());
+
+		frame.getMntmLoadLog().addActionListener(e -> loadLog());
+
+		frame.getTglBtnLoadNext().addActionListener(e -> loadNextCommand());
 
 		this.frame.getView().addMouseListener(new MouseAdapter() {
 			@Override
@@ -998,6 +1008,389 @@ public class DrawingController {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+
+
+	private void loadLog() {
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		fileChooser.setDialogTitle("Load command log");
+		fileChooser.setFileFilter(
+				new FileNameExtensionFilter(
+						"Text files (*.txt)",
+						"txt"));
+
+		if (fileChooser.showOpenDialog(frame)
+				== JFileChooser.APPROVE_OPTION) {
+
+			File file = fileChooser.getSelectedFile();
+
+			List<String> lines = new ArrayList<String>();
+
+			try {
+
+				BufferedReader reader =
+						new BufferedReader(
+								new FileReader(file));
+
+				String line;
+
+				while ((line = reader.readLine()) != null) {
+
+					if (!line.trim().isEmpty()) {
+						lines.add(line.trim());
+					}
+				}
+
+				reader.close();
+			}
+			catch (IOException e) {
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Error while loading command log.",
+						"Load Error",
+						JOptionPane.ERROR_MESSAGE);
+
+				return;
+			}
+
+			if (lines.isEmpty()) {
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Selected command log is empty.",
+						"Load Log",
+						JOptionPane.INFORMATION_MESSAGE);
+
+				return;
+			}
+
+			loadedLogLines.clear();
+			loadedLogLines.addAll(lines);
+			loadedLogIndex = 0;
+
+			model.getShapes().clear();
+			commandManager.clear();
+
+			frame.getTextArea().setText("");
+			frame.getTglBtnLoadNext().setEnabled(true);
+			frame.getTglBtnLoadNext().setSelected(false);
+
+			lineWaitingForEndPoint = false;
+
+			updateSelectionState();
+			updateUndoButton();
+			updateRedoButton();
+
+			frame.getView().repaint();
+
+			JOptionPane.showMessageDialog(
+					frame,
+					"Command log loaded. Use Load Next to execute commands step by step.",
+					"Load Log",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+
+	private void loadNextCommand() {
+
+		frame.getTglBtnLoadNext().setSelected(false);
+
+		if (loadedLogIndex >= loadedLogLines.size()) {
+
+			frame.getTglBtnLoadNext().setEnabled(false);
+			return;
+		}
+
+		String logLine = loadedLogLines.get(loadedLogIndex);
+
+		try {
+
+			executeLogLine(logLine);
+
+			addToLog(logLine);
+
+			loadedLogIndex++;
+
+			updateSelectionState();
+			updateUndoButton();
+			updateRedoButton();
+
+			frame.getView().repaint();
+
+			if (loadedLogIndex >= loadedLogLines.size()) {
+
+				frame.getTglBtnLoadNext().setEnabled(false);
+			}
+		}
+		catch (Exception e) {
+
+			frame.getTglBtnLoadNext().setEnabled(false);
+
+			JOptionPane.showMessageDialog(
+					frame,
+					"Error in log line "
+							+ (loadedLogIndex + 1)
+							+ ":\n"
+							+ logLine,
+					"Load Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+
+	private void executeLogLine(String logLine) {
+
+		if (logLine.startsWith("ADD ")) {
+
+			Shape shape =
+					ShapeLogParser.parseShape(
+							logLine.substring("ADD ".length()));
+
+			commandManager.executeCommand(
+					new AddShapeCommand(
+							model,
+							shape));
+
+			return;
+		}
+
+		if (logLine.startsWith("MODIFY ")) {
+
+			int oldMarker = logLine.indexOf(" old=[");
+			int newMarker = logLine.indexOf("] new=[");
+
+			if (oldMarker == -1 || newMarker == -1) {
+				throw new IllegalArgumentException();
+			}
+
+			int index = Integer.parseInt(
+					logLine.substring(
+							"MODIFY index=".length(),
+							oldMarker));
+
+			String oldShapeText =
+					logLine.substring(
+							oldMarker + " old=[".length(),
+							newMarker);
+
+			String newShapeText =
+					logLine.substring(
+							newMarker + "] new=[".length(),
+							logLine.length() - 1);
+
+			Shape oldShape =
+					ShapeLogParser.parseShape(oldShapeText);
+
+			Shape newShape =
+					ShapeLogParser.parseShape(newShapeText);
+
+			commandManager.executeCommand(
+					new ModifyShapeCommand(
+							model,
+							oldShape,
+							newShape,
+							index));
+
+			return;
+		}
+
+		if (logLine.startsWith("DELETE ")) {
+
+			String deleteText =
+					logLine.substring("DELETE ".length());
+
+			String[] deletedParts =
+					deleteText.split(" \\| ");
+
+			List<Shape> deletedShapes =
+					new ArrayList<Shape>();
+
+			List<Integer> deletedIndexes =
+					new ArrayList<Integer>();
+
+			for (String part : deletedParts) {
+
+				int shapeMarker = part.indexOf(" shape=[");
+
+				if (shapeMarker == -1
+						|| !part.endsWith("]")) {
+
+					throw new IllegalArgumentException();
+				}
+
+				int index = Integer.parseInt(
+						part.substring(
+								"index=".length(),
+								shapeMarker));
+
+				String shapeText =
+						part.substring(
+								shapeMarker
+								+ " shape=[".length(),
+								part.length() - 1);
+
+				deletedIndexes.add(index);
+				deletedShapes.add(
+						ShapeLogParser.parseShape(
+								shapeText));
+			}
+
+			commandManager.executeCommand(
+					new DeleteShapeCommand(
+							model,
+							deletedShapes,
+							deletedIndexes));
+
+			return;
+		}
+
+		if (logLine.startsWith("SELECT index=")) {
+
+			int index =
+					getLogIndex(
+							logLine,
+							"SELECT index=");
+
+			model.get(index).setSelected(true);
+			return;
+		}
+
+		if (logLine.startsWith("DESELECT index=")) {
+
+			int index =
+					getLogIndex(
+							logLine,
+							"DESELECT index=");
+
+			model.get(index).setSelected(false);
+			return;
+		}
+
+		if (logLine.startsWith("TO_FRONT ")) {
+
+			int oldIndex =
+					getLogValue(
+							logLine,
+							"oldIndex=");
+
+			commandManager.executeCommand(
+					new ToFrontCommand(
+							model,
+							oldIndex));
+
+			return;
+		}
+
+		if (logLine.startsWith("TO_BACK ")) {
+
+			int oldIndex =
+					getLogValue(
+							logLine,
+							"oldIndex=");
+
+			commandManager.executeCommand(
+					new ToBackCommand(
+							model,
+							oldIndex));
+
+			return;
+		}
+
+		if (logLine.startsWith("BRING_TO_FRONT ")) {
+
+			int oldIndex =
+					getLogValue(
+							logLine,
+							"oldIndex=");
+
+			commandManager.executeCommand(
+					new BringToFrontCommand(
+							model,
+							oldIndex));
+
+			return;
+		}
+
+		if (logLine.startsWith("BRING_TO_BACK ")) {
+
+			int oldIndex =
+					getLogValue(
+							logLine,
+							"oldIndex=");
+
+			commandManager.executeCommand(
+					new BringToBackCommand(
+							model,
+							oldIndex));
+
+			return;
+		}
+
+		if (logLine.startsWith("UNDO ")) {
+
+			if (!commandManager.canUndo()) {
+				throw new IllegalStateException();
+			}
+
+			commandManager.undo();
+			return;
+		}
+
+		if (logLine.startsWith("REDO ")) {
+
+			if (!commandManager.canRedo()) {
+				throw new IllegalStateException();
+			}
+
+			commandManager.redo();
+			return;
+		}
+
+		throw new IllegalArgumentException();
+	}
+
+
+	private int getLogIndex(
+			String logLine,
+			String prefix) {
+
+		int shapeMarker = logLine.indexOf(" shape=[");
+
+		if (shapeMarker == -1) {
+			throw new IllegalArgumentException();
+		}
+
+		return Integer.parseInt(
+				logLine.substring(
+						prefix.length(),
+						shapeMarker));
+	}
+
+
+	private int getLogValue(
+			String logLine,
+			String key) {
+
+		int start = logLine.indexOf(key);
+
+		if (start == -1) {
+			throw new IllegalArgumentException();
+		}
+
+		start += key.length();
+
+		int end = logLine.indexOf(" ", start);
+
+		if (end == -1) {
+			end = logLine.length();
+		}
+
+		return Integer.parseInt(
+				logLine.substring(start, end));
 	}
 
 

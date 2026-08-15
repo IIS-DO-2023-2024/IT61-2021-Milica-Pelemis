@@ -58,6 +58,7 @@ public class DrawingFrame extends JFrame {
 	private JMenuItem mntmSaveLog = new JMenuItem("Save Log");
 	private JMenuItem mntmSaveDrawing = new JMenuItem("Save Drawing");
 	private JMenuItem mntmLoadDrawing = new JMenuItem("Load Drawing");
+	private JMenuItem mntmLoadLog = new JMenuItem("Load Log");
 
 	private JToggleButton tglBtnToFront = new JToggleButton("To Front");
 	private JToggleButton tglBtnToBack = new JToggleButton("To Back");
@@ -103,6 +104,7 @@ public class DrawingFrame extends JFrame {
 		mnFile.add(mntmSaveDrawing);
 		mnFile.addSeparator();
 		mnFile.add(mntmLoadDrawing);
+		mnFile.add(mntmLoadLog);
 
 		/*
 		 * DRAWING VIEW
@@ -802,6 +804,10 @@ public class DrawingFrame extends JFrame {
 
 	public JMenuItem getMntmLoadDrawing() {
 		return mntmLoadDrawing;
+	}
+
+	public JMenuItem getMntmLoadLog() {
+		return mntmLoadLog;
 	}
 
 	public JTextArea getTextArea() {
