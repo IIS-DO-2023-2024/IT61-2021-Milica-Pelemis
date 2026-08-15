@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import adapter.HexagonAdapter;
 import geometry.Circle;
 import geometry.Donut;
 import geometry.Line;
@@ -86,6 +87,18 @@ public class ShapeLogParser {
 							getInt(values, "y")),
 					getInt(values, "radius"),
 					getInt(values, "innerRadius"),
+					getBoolean(values, "selected"),
+					getColor(values, "edgeColor"),
+					getColor(values, "innerColor"));
+		}
+
+		if ("HEXAGON".equals(type)) {
+
+			return new HexagonAdapter(
+					new Point(
+							getInt(values, "x"),
+							getInt(values, "y")),
+					getInt(values, "radius"),
 					getBoolean(values, "selected"),
 					getColor(values, "edgeColor"),
 					getColor(values, "innerColor"));

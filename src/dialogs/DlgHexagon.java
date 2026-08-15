@@ -23,10 +23,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import adapter.HexagonAdapter;
 import geometry.Point;
-import geometry.Rectangle;
 
-public class DlgRectangle extends JDialog {
+public class DlgHexagon extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,46 +46,26 @@ public class DlgRectangle extends JDialog {
 
 	private JTextField txtX;
 	private JTextField txtY;
-	private JTextField txtHeight;
-	private JTextField txtWidth;
+	private JTextField txtRadius;
 
 	private JButton btnEdgeColor;
-	private JButton btnFillColor;
+	private JButton btnInnerColor;
 
-	private Rectangle rectangle = null;
-	private Color edgeColor = null;
-	private Color innerColor = null;
+	private HexagonAdapter hexagon = null;
 
-	public static void main(String[] args) {
+	private Color edgeColor = Color.BLACK;
+	private Color innerColor = Color.WHITE;
 
-		try {
-
-			DlgRectangle dialog =
-					new DlgRectangle();
-
-			dialog.setDefaultCloseOperation(
-					JDialog.DISPOSE_ON_CLOSE);
-
-			dialog.setVisible(true);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public DlgRectangle() {
+	public DlgHexagon() {
 
 		setModal(true);
-		setTitle("Rectangle");
+		setTitle("Hexagon");
 		setResizable(false);
-		setSize(430, 400);
+		setSize(430, 360);
 		setLocationRelativeTo(null);
 
-		getContentPane().setLayout(
-				new BorderLayout());
-
-		getContentPane().setBackground(
-				backgroundColor);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().setBackground(backgroundColor);
 
 		createHeader();
 		createContent();
@@ -94,34 +74,20 @@ public class DlgRectangle extends JDialog {
 
 	private void createHeader() {
 
-		JPanel headerPanel =
-				new JPanel(new BorderLayout());
-
-		headerPanel.setBackground(
-				backgroundColor);
-
+		JPanel headerPanel = new JPanel(new BorderLayout());
+		headerPanel.setBackground(backgroundColor);
 		headerPanel.setBorder(
-				new EmptyBorder(
-						18,
-						20,
-						12,
-						20));
+				new EmptyBorder(18, 20, 12, 20));
 
-		JLabel lblTitle =
-				new JLabel("Rectangle");
-
+		JLabel lblTitle = new JLabel("Hexagon");
 		lblTitle.setHorizontalAlignment(
 				SwingConstants.CENTER);
-
-		lblTitle.setForeground(
-				textColor);
-
-		lblTitle.setFont(
-				titleFont);
+		lblTitle.setForeground(textColor);
+		lblTitle.setFont(titleFont);
 
 		JLabel lblSubtitle =
 				new JLabel(
-						"Enter position, dimensions and colors");
+						"Enter position, radius and colors");
 
 		lblSubtitle.setHorizontalAlignment(
 				SwingConstants.CENTER);
@@ -130,13 +96,10 @@ public class DlgRectangle extends JDialog {
 				new Color(120, 110, 80));
 
 		lblSubtitle.setFont(
-				new Font(
-						"Segoe UI",
-						Font.PLAIN,
-						12));
+				new Font("Segoe UI", Font.PLAIN, 12));
 
-		JPanel titlePanel =
-				new JPanel(new BorderLayout());
+		JPanel titlePanel = new JPanel(
+				new BorderLayout());
 
 		titlePanel.setOpaque(false);
 
@@ -159,25 +122,18 @@ public class DlgRectangle extends JDialog {
 
 	private void createContent() {
 
-		JPanel wrapper =
-				new JPanel(new BorderLayout());
+		JPanel wrapper = new JPanel(
+				new BorderLayout());
 
-		wrapper.setBackground(
-				backgroundColor);
+		wrapper.setBackground(backgroundColor);
 
 		wrapper.setBorder(
-				new EmptyBorder(
-						0,
-						22,
-						12,
-						22));
+				new EmptyBorder(0, 22, 12, 22));
 
-		JPanel contentPanel =
-				new JPanel(
-						new GridBagLayout());
+		JPanel contentPanel = new JPanel(
+				new GridBagLayout());
 
-		contentPanel.setBackground(
-				panelColor);
+		contentPanel.setBackground(panelColor);
 
 		contentPanel.setBorder(
 				BorderFactory.createCompoundBorder(
@@ -191,55 +147,51 @@ public class DlgRectangle extends JDialog {
 								18,
 								20)));
 
-		txtX = createTextField();
 		addInputRow(
 				contentPanel,
 				"X coordinate",
-				txtX,
+				createTextField(),
 				0);
 
-		txtY = createTextField();
+		txtX = lastCreatedTextField;
+
 		addInputRow(
 				contentPanel,
 				"Y coordinate",
-				txtY,
+				createTextField(),
 				1);
 
-		txtWidth = createTextField();
+		txtY = lastCreatedTextField;
+
 		addInputRow(
 				contentPanel,
-				"Width",
-				txtWidth,
+				"Radius",
+				createTextField(),
 				2);
 
-		txtHeight = createTextField();
-		addInputRow(
-				contentPanel,
-				"Height",
-				txtHeight,
-				3);
+		txtRadius = lastCreatedTextField;
 
 		btnEdgeColor =
 				createColorButton(
-						"Edge Color",
-						Color.WHITE);
+						"Edge color",
+						edgeColor);
 
 		addColorRow(
 				contentPanel,
-				"Edge Color",
+				"Edge color",
 				btnEdgeColor,
-				4);
+				3);
 
-		btnFillColor =
+		btnInnerColor =
 				createColorButton(
-						"Fill Color",
-						Color.WHITE);
+						"Fill color",
+						innerColor);
 
 		addColorRow(
 				contentPanel,
-				"Fill Color",
-				btnFillColor,
-				5);
+				"Fill color",
+				btnInnerColor,
+				4);
 
 		btnEdgeColor.addActionListener(
 				new ActionListener() {
@@ -248,42 +200,46 @@ public class DlgRectangle extends JDialog {
 			public void actionPerformed(
 					ActionEvent e) {
 
-				edgeColor =
+				Color selectedColor =
 						JColorChooser.showDialog(
-								DlgRectangle.this,
+								DlgHexagon.this,
 								"Choose edge color",
 								edgeColor);
 
-				if (edgeColor == null) {
-					edgeColor = Color.BLACK;
-				}
+				if (selectedColor != null) {
 
-				updateColorButton(
-						btnEdgeColor,
-						edgeColor);
+					edgeColor =
+							selectedColor;
+
+					updateColorButton(
+							btnEdgeColor,
+							edgeColor);
+				}
 			}
 		});
 
-		btnFillColor.addActionListener(
+		btnInnerColor.addActionListener(
 				new ActionListener() {
 
 			@Override
 			public void actionPerformed(
 					ActionEvent e) {
 
-				innerColor =
+				Color selectedColor =
 						JColorChooser.showDialog(
-								DlgRectangle.this,
+								DlgHexagon.this,
 								"Choose fill color",
 								innerColor);
 
-				if (innerColor == null) {
-					innerColor = Color.WHITE;
-				}
+				if (selectedColor != null) {
 
-				updateColorButton(
-						btnFillColor,
-						innerColor);
+					innerColor =
+							selectedColor;
+
+					updateColorButton(
+							btnInnerColor,
+							innerColor);
+				}
 			}
 		});
 
@@ -296,6 +252,8 @@ public class DlgRectangle extends JDialog {
 				BorderLayout.CENTER);
 	}
 
+	private JTextField lastCreatedTextField;
+
 	private JTextField createTextField() {
 
 		JTextField textField =
@@ -304,14 +262,9 @@ public class DlgRectangle extends JDialog {
 		textField.setPreferredSize(
 				new Dimension(170, 32));
 
-		textField.setFont(
-				labelFont);
-
-		textField.setForeground(
-				textColor);
-
-		textField.setBackground(
-				Color.WHITE);
+		textField.setFont(labelFont);
+		textField.setForeground(textColor);
+		textField.setBackground(Color.WHITE);
 
 		textField.setBorder(
 				BorderFactory.createCompoundBorder(
@@ -325,6 +278,8 @@ public class DlgRectangle extends JDialog {
 								4,
 								8)));
 
+		lastCreatedTextField = textField;
+
 		return textField;
 	}
 
@@ -334,8 +289,7 @@ public class DlgRectangle extends JDialog {
 			JTextField textField,
 			int row) {
 
-		JLabel label =
-				createLabel(text);
+		JLabel label = createLabel(text);
 
 		GridBagConstraints gbcLabel =
 				new GridBagConstraints();
@@ -347,32 +301,23 @@ public class DlgRectangle extends JDialog {
 				GridBagConstraints.WEST;
 
 		gbcLabel.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						18);
+				new Insets(5, 0, 5, 18);
 
-		panel.add(
-				label,
-				gbcLabel);
+		panel.add(label, gbcLabel);
 
 		GridBagConstraints gbcField =
 				new GridBagConstraints();
 
 		gbcField.gridx = 1;
 		gbcField.gridy = row;
+
 		gbcField.weightx = 1.0;
 
 		gbcField.fill =
 				GridBagConstraints.HORIZONTAL;
 
 		gbcField.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						0);
+				new Insets(5, 0, 5, 0);
 
 		panel.add(
 				textField,
@@ -385,8 +330,7 @@ public class DlgRectangle extends JDialog {
 			JButton button,
 			int row) {
 
-		JLabel label =
-				createLabel(text);
+		JLabel label = createLabel(text);
 
 		GridBagConstraints gbcLabel =
 				new GridBagConstraints();
@@ -398,49 +342,36 @@ public class DlgRectangle extends JDialog {
 				GridBagConstraints.WEST;
 
 		gbcLabel.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						18);
+				new Insets(5, 0, 5, 18);
 
-		panel.add(
-				label,
-				gbcLabel);
+		panel.add(label, gbcLabel);
 
 		GridBagConstraints gbcButton =
 				new GridBagConstraints();
 
 		gbcButton.gridx = 1;
 		gbcButton.gridy = row;
+
 		gbcButton.weightx = 1.0;
 
 		gbcButton.fill =
 				GridBagConstraints.HORIZONTAL;
 
 		gbcButton.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						0);
+				new Insets(5, 0, 5, 0);
 
 		panel.add(
 				button,
 				gbcButton);
 	}
 
-	private JLabel createLabel(
-			String text) {
+	private JLabel createLabel(String text) {
 
 		JLabel label =
 				new JLabel(text + ":");
 
-		label.setFont(
-				labelFont);
-
-		label.setForeground(
-				textColor);
+		label.setFont(labelFont);
+		label.setForeground(textColor);
 
 		return label;
 	}
@@ -452,8 +383,7 @@ public class DlgRectangle extends JDialog {
 		JButton button =
 				new JButton(text);
 
-		button.setFont(
-				buttonFont);
+		button.setFont(buttonFont);
 
 		button.setPreferredSize(
 				new Dimension(170, 32));
@@ -477,12 +407,7 @@ public class DlgRectangle extends JDialog {
 			JButton button,
 			Color color) {
 
-		if (color == null) {
-			color = Color.WHITE;
-		}
-
-		button.setBackground(
-				color);
+		button.setBackground(color);
 
 		int brightness =
 				(color.getRed() * 299
@@ -491,12 +416,10 @@ public class DlgRectangle extends JDialog {
 				/ 1000;
 
 		if (brightness < 140) {
-			button.setForeground(
-					Color.WHITE);
+			button.setForeground(Color.WHITE);
 		}
 		else {
-			button.setForeground(
-					textColor);
+			button.setForeground(textColor);
 		}
 	}
 
@@ -532,7 +455,7 @@ public class DlgRectangle extends JDialog {
 			public void actionPerformed(
 					ActionEvent e) {
 
-				saveRectangle();
+				saveHexagon();
 			}
 		});
 
@@ -550,8 +473,7 @@ public class DlgRectangle extends JDialog {
 		buttonPanel.add(btnOk);
 		buttonPanel.add(btnCancel);
 
-		getRootPane().setDefaultButton(
-				btnOk);
+		getRootPane().setDefaultButton(btnOk);
 
 		getContentPane().add(
 				buttonPanel,
@@ -567,15 +489,9 @@ public class DlgRectangle extends JDialog {
 		button.setPreferredSize(
 				new Dimension(105, 34));
 
-		button.setFont(
-				buttonFont);
-
-		button.setForeground(
-				textColor);
-
-		button.setBackground(
-				Color.WHITE);
-
+		button.setFont(buttonFont);
+		button.setForeground(textColor);
+		button.setBackground(Color.WHITE);
 		button.setFocusPainted(false);
 
 		button.setBorder(
@@ -587,7 +503,7 @@ public class DlgRectangle extends JDialog {
 		return button;
 	}
 
-	private void saveRectangle() {
+	private void saveHexagon() {
 
 		try {
 
@@ -599,61 +515,81 @@ public class DlgRectangle extends JDialog {
 					Integer.parseInt(
 							txtY.getText());
 
-			int width =
+			int radius =
 					Integer.parseInt(
-							txtWidth.getText());
-
-			int height =
-					Integer.parseInt(
-							txtHeight.getText());
+							txtRadius.getText());
 
 			if (x < 0
 					|| y < 0
-					|| width < 1
-					|| height < 1) {
+					|| radius < 1) {
 
 				JOptionPane.showMessageDialog(
 						this,
-						"Numbers must be positive",
+						"Numbers must be positive!",
 						"Error",
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			}
 
-			rectangle =
-					new Rectangle(
+			hexagon =
+					new HexagonAdapter(
 							new Point(x, y),
-							width,
-							height,
+							radius,
 							false,
 							edgeColor,
 							innerColor);
 
 			dispose();
 		}
-		catch (Exception exception) {
+		catch (NumberFormatException exception) {
 
 			JOptionPane.showMessageDialog(
 					this,
-					"Invalid character found!",
+					"Please enter valid numbers.",
 					"Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public Rectangle getRectangle() {
-		return rectangle;
+	public HexagonAdapter getHexagon() {
+		return hexagon;
 	}
 
-	public void setPoint(
-			Point p) {
+	public void setHexagon(
+			HexagonAdapter hexagon) {
 
 		txtX.setText(
-				"" + p.getX());
+				"" + hexagon.getX());
 
 		txtY.setText(
-				"" + p.getY());
+				"" + hexagon.getY());
+
+		txtRadius.setText(
+				"" + hexagon.getRadius());
+
+		edgeColor =
+				hexagon.getColor();
+
+		innerColor =
+				hexagon.getInnerColor();
+
+		updateColorButton(
+				btnEdgeColor,
+				edgeColor);
+
+		updateColorButton(
+				btnInnerColor,
+				innerColor);
+	}
+
+	public void setPoint(Point point) {
+
+		txtX.setText(
+				"" + point.getX());
+
+		txtY.setText(
+				"" + point.getY());
 	}
 
 	public void setColors(
@@ -668,34 +604,7 @@ public class DlgRectangle extends JDialog {
 				edgeColor);
 
 		updateColorButton(
-				btnFillColor,
-				innerColor);
-	}
-
-	public void setRectangle(
-			Rectangle r) {
-
-		txtX.setText(
-				"" + r.getUpperLeft().getX());
-
-		txtY.setText(
-				"" + r.getUpperLeft().getY());
-
-		txtWidth.setText(
-				"" + r.getwidth());
-
-		txtHeight.setText(
-				"" + r.getHeight());
-
-		edgeColor = r.getColor();
-		innerColor = r.getInnerColor();
-
-		updateColorButton(
-				btnEdgeColor,
-				edgeColor);
-
-		updateColorButton(
-				btnFillColor,
+				btnInnerColor,
 				innerColor);
 	}
 }

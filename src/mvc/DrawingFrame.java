@@ -48,8 +48,8 @@ public class DrawingFrame extends JFrame {
 
 	private JToggleButton tglBtnHexagon = new JToggleButton("Hexagon");
 
-	private JToggleButton tglBtnInsideColor = new JToggleButton("Inside Color");
-	private JToggleButton tglBtnOutsideColor = new JToggleButton("Outside Color");
+	private JToggleButton tglBtnInsideColor = new JToggleButton("Fill Color");
+	private JToggleButton tglBtnOutsideColor = new JToggleButton("Edge Color");
 
 	private JToggleButton tglBtnUndo = new JToggleButton("Undo");
 	private JToggleButton tglBtnRedo = new JToggleButton("Redo");
@@ -67,17 +67,18 @@ public class DrawingFrame extends JFrame {
 
 	private JScrollPane scrollPane = new JScrollPane();
 	private JTextArea textArea = new JTextArea();
-	private JLabel lblLog = new JLabel("Log");
+	private JLabel lblLog = new JLabel("Command Log");
 
 	private JPanel contentPane;
 
 	private final Color backgroundColor = new Color(238, 232, 170);
+	private final Color panelColor = new Color(250, 248, 232);
 	private final Color borderColor = new Color(189, 183, 107);
 	private final Color textColor = new Color(139, 69, 19);
 
 	public DrawingFrame() {
 
-		setFont(new Font("Californian FB", Font.BOLD, 14));
+		setFont(new Font("Segoe UI", Font.BOLD, 13));
 		setBackground(backgroundColor);
 		setTitle("Drawing App");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,10 +96,21 @@ public class DrawingFrame extends JFrame {
 		 * FILE MENU
 		 */
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(panelColor);
+		menuBar.setBorder(
+				new MatteBorder(0, 0, 1, 0, borderColor));
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
+		mnFile.setFont(
+				new Font("Segoe UI", Font.BOLD, 13));
+		mnFile.setForeground(textColor);
 		menuBar.add(mnFile);
+
+		styleMenuItem(mntmSaveLog);
+		styleMenuItem(mntmSaveDrawing);
+		styleMenuItem(mntmLoadDrawing);
+		styleMenuItem(mntmLoadLog);
 
 		mnFile.add(mntmSaveLog);
 		mnFile.add(mntmSaveDrawing);
@@ -171,7 +183,7 @@ public class DrawingFrame extends JFrame {
 		lblColors.setHorizontalAlignment(SwingConstants.CENTER);
 		lblColors.setForeground(textColor);
 		lblColors.setFont(
-				new Font("Californian FB", Font.BOLD, 14));
+				new Font("Segoe UI", Font.BOLD, 14));
 
 		GridBagConstraints gbc_lblColors =
 				new GridBagConstraints();
@@ -240,7 +252,7 @@ public class DrawingFrame extends JFrame {
 		lblShapes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShapes.setForeground(textColor);
 		lblShapes.setFont(
-				new Font("Californian FB", Font.BOLD, 14));
+				new Font("Segoe UI", Font.BOLD, 14));
 
 		GridBagConstraints gbc_lblShapes =
 				new GridBagConstraints();
@@ -556,7 +568,7 @@ public class DrawingFrame extends JFrame {
 
 		lblZOrder.setForeground(textColor);
 		lblZOrder.setFont(
-				new Font("Californian FB", Font.BOLD, 14));
+				new Font("Segoe UI", Font.BOLD, 14));
 
 		GridBagConstraints gbc_zLabel =
 				new GridBagConstraints();
@@ -617,10 +629,10 @@ public class DrawingFrame extends JFrame {
 		 * LOG
 		 */
 		scrollPane.setPreferredSize(
-				new Dimension(1085, 150));
+				new Dimension(1085, 155));
 
-		scrollPane.setFont(
-				new Font("Californian FB", Font.BOLD, 14));
+		scrollPane.setBorder(
+				new MatteBorder(1, 0, 0, 0, borderColor));
 
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 
@@ -634,21 +646,75 @@ public class DrawingFrame extends JFrame {
 				SwingConstants.CENTER);
 
 		lblLog.setFont(
-				new Font("Californian FB", Font.BOLD, 14));
+				new Font("Segoe UI", Font.BOLD, 13));
 
 		lblLog.setForeground(textColor);
+		lblLog.setBackground(panelColor);
+		lblLog.setOpaque(true);
 
 		lblLog.setPreferredSize(
-				new Dimension(1085, 25));
+				new Dimension(1085, 30));
 
 		pnlLog.add(lblLog, BorderLayout.NORTH);
 
 		textArea.setFont(
-				new Font("Californian FB", Font.PLAIN, 14));
+				new Font("Monospaced", Font.PLAIN, 12));
 
+		textArea.setForeground(new Color(70, 70, 70));
+		textArea.setBackground(new Color(255, 255, 252));
+		textArea.setMargin(new Insets(8, 10, 8, 10));
 		textArea.setEditable(false);
 
 		pnlLog.add(textArea, BorderLayout.CENTER);
+
+		/*
+		 * TOOLTIPS
+		 */
+		tglBtnDrawing.setToolTipText(
+				"Draw a new shape");
+
+		tglBtnModifyOrDelete.setToolTipText(
+				"Select one or more shapes");
+
+		tglBtnModify.setToolTipText(
+				"Modify the selected shape");
+
+		tglBtnDelete.setToolTipText(
+				"Delete selected shapes");
+
+		tglBtnPoint.setToolTipText("Draw a point");
+		tglBtnLine.setToolTipText("Draw a line");
+		tglBtnRectangle.setToolTipText("Draw a rectangle");
+		tglBtnCircle.setToolTipText("Draw a circle");
+		tglBtnDonut.setToolTipText("Draw a donut");
+		tglBtnHexagon.setToolTipText("Draw a hexagon");
+
+		tglBtnInsideColor.setToolTipText(
+				"Choose active fill color");
+
+		tglBtnOutsideColor.setToolTipText(
+				"Choose active edge color");
+
+		tglBtnUndo.setToolTipText(
+				"Undo the last command");
+
+		tglBtnRedo.setToolTipText(
+				"Redo the last undone command");
+
+		tglBtnLoadNext.setToolTipText(
+				"Execute the next command from the loaded log");
+
+		tglBtnToFront.setToolTipText(
+				"Move selected shape one position forward");
+
+		tglBtnToBack.setToolTipText(
+				"Move selected shape one position backward");
+
+		tglBtnBringToFront.setToolTipText(
+				"Move selected shape to the front");
+
+		tglBtnBringToBack.setToolTipText(
+				"Move selected shape to the back");
 
 		/*
 		 * INITIAL STATE
@@ -664,11 +730,6 @@ public class DrawingFrame extends JFrame {
 		tglBtnToBack.setEnabled(false);
 		tglBtnBringToFront.setEnabled(false);
 		tglBtnBringToBack.setEnabled(false);
-
-		/*
-		 * Hexagon jos nismo implementirali.
-		 */
-		tglBtnHexagon.setEnabled(false);
 	}
 
 	private void styleButton(Component component) {
@@ -679,26 +740,39 @@ public class DrawingFrame extends JFrame {
 					(javax.swing.AbstractButton) component;
 
 			button.setBorder(
-					new LineBorder(borderColor));
+					new LineBorder(
+							borderColor,
+							1,
+							true));
 
 			button.setMinimumSize(
-					new Dimension(125, 30));
+					new Dimension(125, 32));
 
 			button.setPreferredSize(
-					new Dimension(125, 30));
+					new Dimension(125, 32));
 
 			button.setBackground(Color.WHITE);
 			button.setForeground(textColor);
+			button.setFocusPainted(false);
 
 			button.setFont(
 					new Font(
-							"Californian FB",
+							"Segoe UI",
 							Font.BOLD,
-							14));
+							13));
 
 			button.setAlignmentX(
 					Component.CENTER_ALIGNMENT);
 		}
+	}
+
+	private void styleMenuItem(JMenuItem menuItem) {
+
+		menuItem.setFont(
+				new Font("Segoe UI", Font.PLAIN, 13));
+
+		menuItem.setForeground(textColor);
+		menuItem.setBackground(panelColor);
 	}
 
 	public DrawingController getController() {

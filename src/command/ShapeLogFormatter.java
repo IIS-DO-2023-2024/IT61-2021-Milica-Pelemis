@@ -2,6 +2,7 @@ package command;
 
 import java.awt.Color;
 
+import adapter.HexagonAdapter;
 import geometry.Circle;
 import geometry.Donut;
 import geometry.Line;
@@ -63,6 +64,19 @@ public class ShapeLogFormatter {
 					+ " edgeColor=" + colorToInt(donut.getColor())
 					+ " innerColor=" + colorToInt(donut.getInnerColor())
 					+ " selected=" + donut.isSelected();
+		}
+
+		else if (shape instanceof HexagonAdapter) {
+
+			HexagonAdapter hexagon = (HexagonAdapter) shape;
+
+			return "HEXAGON"
+					+ " x=" + hexagon.getX()
+					+ " y=" + hexagon.getY()
+					+ " radius=" + hexagon.getRadius()
+					+ " edgeColor=" + colorToInt(hexagon.getColor())
+					+ " innerColor=" + colorToInt(hexagon.getInnerColor())
+					+ " selected=" + hexagon.isSelected();
 		}
 
 		else if (shape instanceof Circle) {

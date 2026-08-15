@@ -1,10 +1,4 @@
-/drawing/
-/geometry/
-/sort/
-/stack/
+/adapter/
+/dialogs/
 /mvc/
 /command/
-/observer/
-/adapter/
-/strategy/
-/dialogs/

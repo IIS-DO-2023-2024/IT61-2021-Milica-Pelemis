@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dialogs.DlgCircle;
 import dialogs.DlgDonut;
+import dialogs.DlgHexagon;
 import dialogs.DlgLine;
 import dialogs.DlgPoint;
 import dialogs.DlgRectangle;
@@ -30,6 +31,8 @@ import geometry.Line;
 import geometry.Point;
 import geometry.Rectangle;
 import geometry.Shape;
+
+import adapter.HexagonAdapter;
 
 import observer.SelectionButtonsObserver;
 import observer.SelectionSubject;
@@ -326,6 +329,32 @@ public class DrawingController {
 
 			return;
 		}
+
+		else if (frame.getTglBtnHexagon().isSelected()) {
+
+			DlgHexagon dlgHexagon = new DlgHexagon();
+
+			dlgHexagon.setPoint(mouseClick);
+			dlgHexagon.setColors(edgeColor, innerColor);
+			dlgHexagon.setVisible(true);
+
+			if (dlgHexagon.getHexagon() != null) {
+
+				AddShapeCommand addShapeCommand = new AddShapeCommand(
+						model,
+						dlgHexagon.getHexagon());
+
+				commandManager.executeCommand(addShapeCommand);
+				addToLog(addShapeCommand.toString());
+
+				updateUndoButton();
+				updateRedoButton();
+
+				frame.getView().repaint();
+			}
+
+			return;
+		}
 	}
 
 
@@ -587,6 +616,28 @@ public class DrawingController {
 
 		frame.getTglBtnInsideColor().setBackground(innerColor);
 		frame.getTglBtnOutsideColor().setBackground(edgeColor);
+
+		frame.getTglBtnInsideColor().setForeground(
+				getTextColorForBackground(innerColor));
+
+		frame.getTglBtnOutsideColor().setForeground(
+				getTextColorForBackground(edgeColor));
+	}
+
+
+	private Color getTextColorForBackground(Color backgroundColor) {
+
+		int brightness =
+				(backgroundColor.getRed() * 299
+				+ backgroundColor.getGreen() * 587
+				+ backgroundColor.getBlue() * 114)
+				/ 1000;
+
+		if (brightness < 140) {
+			return Color.WHITE;
+		}
+
+		return new Color(139, 69, 19);
 	}
 
 
@@ -708,6 +759,39 @@ public class DrawingController {
 								model,
 								oldRectangle,
 								dlgRectangle.getRectangle(),
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
+
+				updateSelectionState();
+
+				updateUndoButton();
+				updateRedoButton();
+
+				frame.getView().repaint();
+			}
+		}
+
+		else if (shape instanceof HexagonAdapter) {
+
+			HexagonAdapter oldHexagon =
+					(HexagonAdapter) shape.clone();
+
+			DlgHexagon dlgHexagon = new DlgHexagon();
+
+			dlgHexagon.setHexagon((HexagonAdapter) shape);
+			dlgHexagon.setVisible(true);
+
+			if (dlgHexagon.getHexagon() != null) {
+
+				dlgHexagon.getHexagon().setSelected(true);
+
+				ModifyShapeCommand modifyShapeCommand =
+						new ModifyShapeCommand(
+								model,
+								oldHexagon,
+								dlgHexagon.getHexagon(),
 								index);
 
 				commandManager.executeCommand(modifyShapeCommand);
@@ -1432,6 +1516,7 @@ public class DrawingController {
 		frame.getTglBtnRectangle().setEnabled(true);
 		frame.getTglBtnCircle().setEnabled(true);
 		frame.getTglBtnDonut().setEnabled(true);
+		frame.getTglBtnHexagon().setEnabled(true);
 
 		frame.getView().repaint();
 	}
@@ -1454,5 +1539,6 @@ public class DrawingController {
 		frame.getTglBtnRectangle().setEnabled(false);
 		frame.getTglBtnCircle().setEnabled(false);
 		frame.getTglBtnDonut().setEnabled(false);
+		frame.getTglBtnHexagon().setEnabled(false);
 	}
 }
