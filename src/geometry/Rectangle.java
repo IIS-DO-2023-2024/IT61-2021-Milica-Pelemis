@@ -14,11 +14,13 @@ public class Rectangle extends SurfaceShapes {
 	public Rectangle() {
 		
 	}
+	
 	public Rectangle (Point upperLeft, int width, int height) {
 		this.upperLeft=upperLeft;
 		this.width=width;
 		this.height=height;
 	}
+	
 	public Rectangle (Point upperLeft, int width, int height, boolean selected) {
 		this(upperLeft,width, height);
 		setSelected(selected);
@@ -42,23 +44,6 @@ public class Rectangle extends SurfaceShapes {
 		setInnerColor(innerColor);
 	}
 	
-	public boolean equals (Object obj) {
-		if (obj instanceof Rectangle)
-		{
-			Rectangle pomocna = (Rectangle) obj;
-			if (this.upperLeft.equals(pomocna.getUpperLeft()) && this.width == width && this.height== height) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
 	public String toString () {
 		return upperLeft + ",width" + width + ", height" + height; 
 	}
@@ -75,8 +60,8 @@ public class Rectangle extends SurfaceShapes {
 	//Povrsina pravougaonika
 	public int area() {
 		return width*height;
-		
 	}
+	
 	//Obim pravougaonika
 	public int circumference() {
 		return 2*width + 2*height;
@@ -86,18 +71,23 @@ public class Rectangle extends SurfaceShapes {
 	public Point getUpperLeft() {
 		return upperLeft;
 	}
+	
 	public void setUpperLeft(Point upperLeft) {
 		this.upperLeft = upperLeft; 
 	}
+	
 	public int getwidth() {
 		return width;
 	}
+	
 	public void setWidth(int width) {
 		this.width = width;
 	}
+	
 	public int getHeight () {
 		return height;
 	}
+	
 	public void setHeight(int height) {
 		this.height = height;
 	}
@@ -124,7 +114,7 @@ public class Rectangle extends SurfaceShapes {
 		}
 		
 	}
-	//Vjezbe 7
+	
 	@Override
 	public void moveTo(int x, int y) {
 
@@ -135,14 +125,6 @@ public class Rectangle extends SurfaceShapes {
 	public void moveBy(int byX, int byY) {
 		
 		upperLeft.moveBy(byX, byY);
-	}
-	
-	@Override
-	public int compareTo(Object obj) {
-		if (obj instanceof Rectangle) {
-			return (int) (this.area() - ((Rectangle)obj).area());
-		}
-		return 0;
 	}
 	
 	@Override
@@ -161,7 +143,4 @@ public class Rectangle extends SurfaceShapes {
 
 		return clonedRectangle;
 	}
-	
-	
-	
 }

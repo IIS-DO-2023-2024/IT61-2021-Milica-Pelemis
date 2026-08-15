@@ -13,6 +13,7 @@ public class Line extends Shape{
 	public Line () {
 		
 	}
+	
 	public Line (Point startPoint, Point endPoint) {
 		this.startPoint=startPoint;
 		this.endPoint=endPoint;
@@ -32,23 +33,6 @@ public class Line extends Shape{
 		this(startPoint, endPoint, selected);
 		setColor(color);
 	}
-	public boolean equals (Object obj) {
-		if (obj instanceof Line) {
-			
-			Line pomocna = (Line) obj;
-			if (this.startPoint.equals(pomocna.startPoint) && this.endPoint.equals(pomocna.endPoint))
-			{
-				return true;
-			}
-			else 
-			{
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
-	}
 	
 	public String toString() {
 		return startPoint + "-->" + endPoint;
@@ -64,10 +48,12 @@ public class Line extends Shape{
 	public double length () {
 		return startPoint.distance(endPoint.getX(), endPoint.getY());
 	}
+	
 	//Metode pristupa
 	public Point getStartPoint () {
 		return startPoint;
 	}
+	
 	public void setStartPoint (Point startPoint) {
 		this.startPoint = startPoint;
 		//metoda klase i parametar metode se nazivaju isto pa zato treba this
@@ -76,6 +62,7 @@ public class Line extends Shape{
 	public Point getEndPoint () {
 		return endPoint;
 	}
+	
 	public void setEndPoint (Point endPoint) {
 		this.endPoint = endPoint;
 	}
@@ -108,14 +95,6 @@ public class Line extends Shape{
 	}
 	
 	@Override
-	public int compareTo(Object obj) {
-		if (obj instanceof Line) {
-			return (int) (this.length() - ((Line) obj).length());
-		}
-		return 0;
-	}
-	
-	@Override
 	public Shape clone() {
 		// TODO Auto-generated method stub
 		
@@ -130,5 +109,4 @@ public class Line extends Shape{
 
 		return clonedLine;
 	}
-	
 }

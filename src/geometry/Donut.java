@@ -65,24 +65,6 @@ public class Donut extends Circle {
 				+ " Inner radius =" + innerRadius;
 	}
 
-	public boolean equals(Object obj) {
-
-		if (obj instanceof Donut) {
-
-			Donut pomocna = (Donut) obj;
-
-			if (pomocna.getCenter().equals(getCenter())
-					&& pomocna.getRadius() == getRadius()
-					&& pomocna.innerRadius == innerRadius) {
-				return true;
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
 	public void draw(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g;

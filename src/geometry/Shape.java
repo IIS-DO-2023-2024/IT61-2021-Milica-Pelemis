@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import java.io.Serializable;
 
-public abstract class Shape implements Moveable, Comparable, Prototype, Serializable {
+public abstract class Shape implements Moveable, Prototype, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

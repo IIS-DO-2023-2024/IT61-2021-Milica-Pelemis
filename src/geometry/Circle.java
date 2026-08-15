@@ -13,10 +13,12 @@ public class Circle extends SurfaceShapes{
 	public Circle() {
 		
 	}
+	
 	public Circle (Point center, int radius) {
 		this.center=center;
 		this.radius=radius;
 	}
+	
 	public Circle (Point center, int radius, boolean selected) {
 		this(center, radius);
 		setSelected (selected);
@@ -27,39 +29,25 @@ public class Circle extends SurfaceShapes{
 		this(center, radius, selected);
 		setColor(color);
 	}
+	
 	public Circle (Point center, int radius, boolean selected, Color color, Color innerColor)
 	{
 		this(center, radius, selected, color);
 		setInnerColor(innerColor);
 	}
 	
-	public boolean equals (Object obj) {
-		if (obj instanceof Circle)
-		{
-			Circle pomocna = (Circle) obj;
-			if (pomocna.getCenter().equals(center) && pomocna.getRadius() ==radius)
-			{
-				return true;
-			}
-			else {
-				return false;
-			}
-	}
-			return false;
-	}	
 	public String toString () {
 		return "Center point =" + center + "radius =" + radius;
 	}
-		
-		
+	
 		
 	public boolean contains (int x, int y) {
 		return center.distance(x, y) <= radius;
 	}
+	
 	public boolean contains (Point p) {
 		return center.distance(p.getX(), p.getY()) <= radius;
 	}
-	
 	
 	
 	//Obim kruga
@@ -127,14 +115,6 @@ public class Circle extends SurfaceShapes{
 
 		center.moveBy(byX, byY);
 	}
-	@Override
-	public int compareTo(Object obj) {
-		if (obj instanceof Circle) {
-			return (int) (this.area() - ((Circle)obj).area());
-		}
-		return 0;
-	}
-	
 	
 	@Override
 	public Shape clone() {
@@ -151,7 +131,5 @@ public class Circle extends SurfaceShapes{
 
 		return clonedCircle;
 	}
-	
-	
 	
 }

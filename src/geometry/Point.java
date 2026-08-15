@@ -1,9 +1,6 @@
 package geometry;
 
 import java.awt.Color;
-
-//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
-
 import java.awt.Graphics;
 
 public class Point extends Shape{
@@ -23,12 +20,14 @@ public class Point extends Shape{
 	public Point () {
 		
 	}
+	
 	//poziva se u pozadini
 	public Point (int x, int y) {
 		this.x = x;
 		this.y = y;
 		
 	}
+	
 	public Point (int x, int y, boolean selected) {
 		this(x,y);
 		setSelected (selected);
@@ -45,22 +44,6 @@ public class Point extends Shape{
 		this(x, y, selected);
 		setColor(color);
 	}
-
-	public boolean equals(Object obj) {
-		if (obj instanceof Point) {
-			Point pomocna = (Point) obj;
-			if (this.x == pomocna.getX() && this.x == pomocna.getY()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
-	}
-	//provjera da li je instanca neke klase
 	
 	public String toString () {
 		return "(" + x + "," + y + ")"; 
@@ -70,17 +53,7 @@ public class Point extends Shape{
 	{
 		return this.distance(x, y) <= 2;
 		
-		/*if (this.distance(x, y)<= 2)
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-		*/
 	}
-	
 	
 	//Metode pristupa 
 	//GET i SET metode
@@ -89,6 +62,7 @@ public class Point extends Shape{
 		return x;
 		//vraca vrijednost promjenljive x
 	}
+	
 	//SET je uvijek void i ima ulazni parametar
 	public void setX(int x) {
 		this.x=x;
@@ -98,12 +72,12 @@ public class Point extends Shape{
 	public int getY() {
 		return this.y; // moze return y i be this
 	}
+	
 	public void setY(int y)
 	{
 		this.y=y;
 	}
 
-	
 	public void draw(Graphics g) {
 		g.setColor(getColor());
 		g.drawLine (x-2,y, x+2, y);  //horizontalna linija
@@ -133,15 +107,6 @@ public class Point extends Shape{
 	}
 
 	@Override
-	public int compareTo(Object obj) {
-		
-		if (obj instanceof Point) {
-			return (int) (this.distance(0, 0) - ((Point) obj).distance(0, 0));
-		}
-		return 0;
-	}
-
-	@Override
 	public Shape clone() {
 		// TODO Auto-generated method stub
 		
@@ -153,9 +118,5 @@ public class Point extends Shape{
 
 		return clonedPoint;
 	}
-
-	
-	
-	
 }
 
