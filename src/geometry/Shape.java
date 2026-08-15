@@ -3,8 +3,12 @@ package geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public abstract class Shape implements Moveable, Comparable, Prototype {
+import java.io.Serializable;
 
+public abstract class Shape implements Moveable, Comparable, Prototype, Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private boolean selected;
 	private Color color;
 

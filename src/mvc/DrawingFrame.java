@@ -13,6 +13,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -52,6 +55,10 @@ public class DrawingFrame extends JFrame {
 	private JToggleButton tglBtnRedo = new JToggleButton("Redo");
 	private JToggleButton tglBtnLoadNext = new JToggleButton("Load Next");
 
+	private JMenuItem mntmSaveLog = new JMenuItem("Save Log");
+	private JMenuItem mntmSaveDrawing = new JMenuItem("Save Drawing");
+	private JMenuItem mntmLoadDrawing = new JMenuItem("Load Drawing");
+
 	private JToggleButton tglBtnToFront = new JToggleButton("To Front");
 	private JToggleButton tglBtnToBack = new JToggleButton("To Back");
 	private JToggleButton tglBtnBringToFront = new JToggleButton("Bring To Front");
@@ -82,6 +89,20 @@ public class DrawingFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+
+		/*
+		 * FILE MENU
+		 */
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+
+		mnFile.add(mntmSaveLog);
+		mnFile.add(mntmSaveDrawing);
+		mnFile.addSeparator();
+		mnFile.add(mntmLoadDrawing);
 
 		/*
 		 * DRAWING VIEW
@@ -769,6 +790,18 @@ public class DrawingFrame extends JFrame {
 
 	public JToggleButton getTglBtnBringToBack() {
 		return tglBtnBringToBack;
+	}
+
+	public JMenuItem getMntmSaveLog() {
+		return mntmSaveLog;
+	}
+
+	public JMenuItem getMntmSaveDrawing() {
+		return mntmSaveDrawing;
+	}
+
+	public JMenuItem getMntmLoadDrawing() {
+		return mntmLoadDrawing;
 	}
 
 	public JTextArea getTextArea() {

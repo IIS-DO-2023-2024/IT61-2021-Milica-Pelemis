@@ -3,12 +3,18 @@ package mvc;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dialogs.DlgCircle;
 import dialogs.DlgDonut;
@@ -35,6 +41,10 @@ import command.ToFrontCommand;
 import command.ToBackCommand;
 import command.BringToFrontCommand;
 import command.BringToBackCommand;
+
+import strategy.DrawingSaveStrategy;
+import strategy.LogSaveStrategy;
+import strategy.SaveContext;
 import command.ShapeLogFormatter;
 
 public class DrawingController {
@@ -86,6 +96,12 @@ public class DrawingController {
 		frame.getTglBtnInsideColor().addActionListener(e -> chooseInnerColor());
 
 		frame.getTglBtnOutsideColor().addActionListener(e -> chooseEdgeColor());
+
+		frame.getMntmSaveLog().addActionListener(e -> saveLog());
+
+		frame.getMntmSaveDrawing().addActionListener(e -> saveDrawing());
+
+		frame.getMntmLoadDrawing().addActionListener(e -> loadDrawing());
 
 		this.frame.getView().addMouseListener(new MouseAdapter() {
 			@Override
@@ -805,6 +821,200 @@ public class DrawingController {
 
 			frame.getView().repaint();
 		}
+	}
+
+
+	private void saveLog() {
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		fileChooser.setDialogTitle("Save command log");
+		fileChooser.setFileFilter(
+				new FileNameExtensionFilter(
+						"Text files (*.txt)",
+						"txt"));
+
+		if (fileChooser.showSaveDialog(frame)
+				== JFileChooser.APPROVE_OPTION) {
+
+			File file = addExtension(
+					fileChooser.getSelectedFile(),
+					".txt");
+
+			SaveContext saveContext = new SaveContext();
+
+			saveContext.setStrategy(
+					new LogSaveStrategy(
+							frame.getTextArea().getText()));
+
+			try {
+
+				saveContext.save(file);
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Command log saved successfully.",
+						"Save Log",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch (IOException e) {
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Error while saving command log.",
+						"Save Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+
+	private void saveDrawing() {
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		fileChooser.setDialogTitle("Save drawing");
+		fileChooser.setFileFilter(
+				new FileNameExtensionFilter(
+						"Serialized drawing (*.ser)",
+						"ser"));
+
+		if (fileChooser.showSaveDialog(frame)
+				== JFileChooser.APPROVE_OPTION) {
+
+			File file = addExtension(
+					fileChooser.getSelectedFile(),
+					".ser");
+
+			SaveContext saveContext = new SaveContext();
+
+			saveContext.setStrategy(
+					new DrawingSaveStrategy(model));
+
+			try {
+
+				saveContext.save(file);
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Drawing saved successfully.",
+						"Save Drawing",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch (IOException e) {
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Error while saving drawing.",
+						"Save Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+
+	private void loadDrawing() {
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		fileChooser.setDialogTitle("Load drawing");
+		fileChooser.setFileFilter(
+				new FileNameExtensionFilter(
+						"Serialized drawing (*.ser)",
+						"ser"));
+
+		if (fileChooser.showOpenDialog(frame)
+				== JFileChooser.APPROVE_OPTION) {
+
+			File file = fileChooser.getSelectedFile();
+
+			try {
+
+				ObjectInputStream input =
+						new ObjectInputStream(
+								new FileInputStream(file));
+
+				Object loadedObject = input.readObject();
+
+				input.close();
+
+				if (!(loadedObject instanceof List<?>)) {
+
+					JOptionPane.showMessageDialog(
+							frame,
+							"Selected file does not contain a valid drawing.",
+							"Load Error",
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+
+				List<?> loadedList = (List<?>) loadedObject;
+				List<Shape> loadedShapes = new ArrayList<Shape>();
+
+				for (Object object : loadedList) {
+
+					if (!(object instanceof Shape)) {
+
+						JOptionPane.showMessageDialog(
+								frame,
+								"Selected file does not contain a valid drawing.",
+								"Load Error",
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					}
+
+					Shape shape = (Shape) object;
+					shape.setSelected(false);
+					loadedShapes.add(shape);
+				}
+
+				model.getShapes().clear();
+				model.getShapes().addAll(loadedShapes);
+
+				commandManager.clear();
+
+				frame.getTextArea().setText("");
+
+				updateSelectionState();
+				updateUndoButton();
+				updateRedoButton();
+
+				frame.getView().repaint();
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Drawing loaded successfully.",
+						"Load Drawing",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch (IOException | ClassNotFoundException e) {
+
+				JOptionPane.showMessageDialog(
+						frame,
+						"Error while loading drawing.",
+						"Load Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+
+	private File addExtension(
+			File file,
+			String extension) {
+
+		if (!file.getName()
+				.toLowerCase()
+				.endsWith(extension)) {
+
+			return new File(
+					file.getAbsolutePath()
+					+ extension);
+		}
+
+		return file;
 	}
 
 

@@ -70,4 +70,10 @@ public class CommandManager {
 
 		return redoCommands.get(redoCommands.size() - 1);
 	}
+
+	public void clear() {
+
+		undoCommands.clear();
+		redoCommands.clear();
+	}
 }
