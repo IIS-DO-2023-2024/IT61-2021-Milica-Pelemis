@@ -29,4 +29,10 @@ public class AddShapeCommand implements Command {
 
 		model.remove(index);
 	}
+
+	@Override
+	public String toString() {
+
+		return "ADD " + ShapeLogFormatter.format(shape);
+	}
 }

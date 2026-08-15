@@ -31,4 +31,13 @@ public class ModifyShapeCommand implements Command {
 	public void unexecute() {
 		model.set(index, oldShape.clone());
 	}
+
+	@Override
+	public String toString() {
+
+		return "MODIFY"
+				+ " index=" + index
+				+ " old=[" + ShapeLogFormatter.format(oldShape) + "]"
+				+ " new=[" + ShapeLogFormatter.format(newShape) + "]";
+	}
 }

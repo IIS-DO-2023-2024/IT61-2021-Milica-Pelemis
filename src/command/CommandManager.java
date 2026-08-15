@@ -52,4 +52,22 @@ public class CommandManager {
 	public boolean canRedo() {
 		return !redoCommands.isEmpty();
 	}
+
+	public Command getLastUndoCommand() {
+
+		if (undoCommands.isEmpty()) {
+			return null;
+		}
+
+		return undoCommands.get(undoCommands.size() - 1);
+	}
+
+	public Command getLastRedoCommand() {
+
+		if (redoCommands.isEmpty()) {
+			return null;
+		}
+
+		return redoCommands.get(redoCommands.size() - 1);
+	}
 }

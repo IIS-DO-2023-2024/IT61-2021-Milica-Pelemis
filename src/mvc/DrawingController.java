@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JColorChooser;
 
 import dialogs.DlgCircle;
 import dialogs.DlgDonut;
@@ -26,6 +27,7 @@ import observer.SelectionButtonsObserver;
 import observer.SelectionSubject;
 
 import command.AddShapeCommand;
+import command.Command;
 import command.CommandManager;
 import command.ModifyShapeCommand;
 import command.DeleteShapeCommand;
@@ -33,6 +35,7 @@ import command.ToFrontCommand;
 import command.ToBackCommand;
 import command.BringToFrontCommand;
 import command.BringToBackCommand;
+import command.ShapeLogFormatter;
 
 public class DrawingController {
 
@@ -79,6 +82,10 @@ public class DrawingController {
 		frame.getTglBtnBringToFront().addActionListener(e -> bringToFront());
 
 		frame.getTglBtnBringToBack().addActionListener(e -> bringToBack());
+		
+		frame.getTglBtnInsideColor().addActionListener(e -> chooseInnerColor());
+
+		frame.getTglBtnOutsideColor().addActionListener(e -> chooseEdgeColor());
 
 		this.frame.getView().addMouseListener(new MouseAdapter() {
 			@Override
@@ -89,6 +96,7 @@ public class DrawingController {
 
 		updateUndoButton();
 		updateRedoButton();
+		updateColorButtons();
 	}
 
 
@@ -102,7 +110,24 @@ public class DrawingController {
 			for (Shape s : rev) {
 				if (s.contains(x, y)) {
 
+					int index = getShapeIndex(s);
+
 					s.setSelected(!s.isSelected());
+
+					if (s.isSelected()) {
+						addToLog(
+								"SELECT index=" + index
+								+ " shape=["
+								+ ShapeLogFormatter.format(s)
+								+ "]");
+					}
+					else {
+						addToLog(
+								"DESELECT index=" + index
+								+ " shape=["
+								+ ShapeLogFormatter.format(s)
+								+ "]");
+					}
 
 					updateSelectionState();
 
@@ -111,8 +136,20 @@ public class DrawingController {
 				}
 			}
 
-			for (Shape s : model.getShapes()) {
-				s.setSelected(false);
+			for (int i = 0; i < model.size(); i++) {
+
+				Shape shape = model.get(i);
+
+				if (shape.isSelected()) {
+
+					shape.setSelected(false);
+
+					addToLog(
+							"DESELECT index=" + i
+							+ " shape=["
+							+ ShapeLogFormatter.format(shape)
+							+ "]");
+				}
 			}
 
 			updateSelectionState();
@@ -133,10 +170,12 @@ public class DrawingController {
 
 			if (dlgPoint.getPoint() != null) {
 
-				commandManager.executeCommand(
-						new AddShapeCommand(
-								model,
-								dlgPoint.getPoint()));
+				AddShapeCommand addShapeCommand = new AddShapeCommand(
+						model,
+						dlgPoint.getPoint());
+
+				commandManager.executeCommand(addShapeCommand);
+				addToLog(addShapeCommand.toString());
 
 				updateUndoButton();
 				updateRedoButton();
@@ -161,10 +200,12 @@ public class DrawingController {
 
 				if (dlgLine.getLine() != null) {
 
-					commandManager.executeCommand(
-							new AddShapeCommand(
-									model,
-									dlgLine.getLine()));
+					AddShapeCommand addShapeCommand = new AddShapeCommand(
+							model,
+							dlgLine.getLine());
+
+					commandManager.executeCommand(addShapeCommand);
+					addToLog(addShapeCommand.toString());
 
 					updateUndoButton();
 					updateRedoButton();
@@ -191,10 +232,12 @@ public class DrawingController {
 
 			if (dlgRectangle.getRectangle() != null) {
 
-				commandManager.executeCommand(
-						new AddShapeCommand(
-								model,
-								dlgRectangle.getRectangle()));
+				AddShapeCommand addShapeCommand = new AddShapeCommand(
+						model,
+						dlgRectangle.getRectangle());
+
+				commandManager.executeCommand(addShapeCommand);
+				addToLog(addShapeCommand.toString());
 
 				updateUndoButton();
 				updateRedoButton();
@@ -216,10 +259,12 @@ public class DrawingController {
 
 			if (dlgCircle.getCircle() != null) {
 
-				commandManager.executeCommand(
-						new AddShapeCommand(
-								model,
-								dlgCircle.getCircle()));
+				AddShapeCommand addShapeCommand = new AddShapeCommand(
+						model,
+						dlgCircle.getCircle());
+
+				commandManager.executeCommand(addShapeCommand);
+				addToLog(addShapeCommand.toString());
 
 				updateUndoButton();
 				updateRedoButton();
@@ -240,10 +285,12 @@ public class DrawingController {
 
 			if (dlgDonut.getDonut() != null) {
 
-				commandManager.executeCommand(
-						new AddShapeCommand(
-								model,
-								dlgDonut.getDonut()));
+				AddShapeCommand addShapeCommand = new AddShapeCommand(
+						model,
+						dlgDonut.getDonut());
+
+				commandManager.executeCommand(addShapeCommand);
+				addToLog(addShapeCommand.toString());
 
 				updateUndoButton();
 				updateRedoButton();
@@ -253,6 +300,14 @@ public class DrawingController {
 
 			return;
 		}
+	}
+
+
+	private void addToLog(String text) {
+
+		frame.getTextArea().append(text + System.lineSeparator());
+		frame.getTextArea().setCaretPosition(
+				frame.getTextArea().getDocument().getLength());
 	}
 
 
@@ -311,7 +366,15 @@ public class DrawingController {
 
 	private void undo() {
 
+		Command command = commandManager.getLastUndoCommand();
+
+		if (command == null) {
+			return;
+		}
+
 		commandManager.undo();
+
+		addToLog("UNDO " + command.toString());
 
 		updateSelectionState();
 
@@ -326,7 +389,15 @@ public class DrawingController {
 
 	private void redo() {
 
+		Command command = commandManager.getLastRedoCommand();
+
+		if (command == null) {
+			return;
+		}
+
 		commandManager.redo();
+
+		addToLog("REDO " + command.toString());
 
 		updateSelectionState();
 
@@ -349,10 +420,13 @@ public class DrawingController {
 			return;
 		}
 
-		commandManager.executeCommand(
+		ToFrontCommand toFrontCommand =
 				new ToFrontCommand(
 						model,
-						index));
+						index);
+
+		commandManager.executeCommand(toFrontCommand);
+		addToLog(toFrontCommand.toString());
 
 		updateSelectionState();
 
@@ -375,10 +449,13 @@ public class DrawingController {
 			return;
 		}
 
-		commandManager.executeCommand(
+		ToBackCommand toBackCommand =
 				new ToBackCommand(
 						model,
-						index));
+						index);
+
+		commandManager.executeCommand(toBackCommand);
+		addToLog(toBackCommand.toString());
 
 		updateSelectionState();
 
@@ -401,10 +478,13 @@ public class DrawingController {
 			return;
 		}
 
-		commandManager.executeCommand(
+		BringToFrontCommand bringToFrontCommand =
 				new BringToFrontCommand(
 						model,
-						index));
+						index);
+
+		commandManager.executeCommand(bringToFrontCommand);
+		addToLog(bringToFrontCommand.toString());
 
 		updateSelectionState();
 
@@ -427,10 +507,13 @@ public class DrawingController {
 			return;
 		}
 
-		commandManager.executeCommand(
+		BringToBackCommand bringToBackCommand =
 				new BringToBackCommand(
 						model,
-						index));
+						index);
+
+		commandManager.executeCommand(bringToBackCommand);
+		addToLog(bringToBackCommand.toString());
 
 		updateSelectionState();
 
@@ -441,6 +524,44 @@ public class DrawingController {
 
 		frame.getView().repaint();
 	}
+	
+	private void chooseInnerColor() {
+
+		Color selectedColor = JColorChooser.showDialog(
+				frame,
+				"Choose inside color",
+				innerColor);
+
+		if (selectedColor != null) {
+			innerColor = selectedColor;
+			updateColorButtons();
+		}
+
+		frame.getTglBtnInsideColor().setSelected(false);
+	}
+
+
+	private void chooseEdgeColor() {
+
+		Color selectedColor = JColorChooser.showDialog(
+				frame,
+				"Choose outside color",
+				edgeColor);
+
+		if (selectedColor != null) {
+			edgeColor = selectedColor;
+			updateColorButtons();
+		}
+
+		frame.getTglBtnOutsideColor().setSelected(false);
+	}
+
+
+	private void updateColorButtons() {
+
+		frame.getTglBtnInsideColor().setBackground(innerColor);
+		frame.getTglBtnOutsideColor().setBackground(edgeColor);
+	}
 
 
 	private int getSelectedShapeIndex() {
@@ -448,6 +569,19 @@ public class DrawingController {
 		for (int i = 0; i < model.size(); i++) {
 
 			if (model.get(i).isSelected()) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+
+	private int getShapeIndex(Shape targetShape) {
+
+		for (int i = 0; i < model.size(); i++) {
+
+			if (model.get(i) == targetShape) {
 				return i;
 			}
 		}
@@ -479,12 +613,15 @@ public class DrawingController {
 
 				dlgPoint.getPoint().setSelected(true);
 
-				commandManager.executeCommand(
+				ModifyShapeCommand modifyShapeCommand =
 						new ModifyShapeCommand(
 								model,
 								oldPoint,
 								dlgPoint.getPoint(),
-								index));
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
 
 				updateSelectionState();
 
@@ -508,12 +645,15 @@ public class DrawingController {
 
 				dlgLine.getLine().setSelected(true);
 
-				commandManager.executeCommand(
+				ModifyShapeCommand modifyShapeCommand =
 						new ModifyShapeCommand(
 								model,
 								oldLine,
 								dlgLine.getLine(),
-								index));
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
 
 				updateSelectionState();
 
@@ -537,12 +677,15 @@ public class DrawingController {
 
 				dlgRectangle.getRectangle().setSelected(true);
 
-				commandManager.executeCommand(
+				ModifyShapeCommand modifyShapeCommand =
 						new ModifyShapeCommand(
 								model,
 								oldRectangle,
 								dlgRectangle.getRectangle(),
-								index));
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
 
 				updateSelectionState();
 
@@ -566,12 +709,15 @@ public class DrawingController {
 
 				dlgDonut.getDonut().setSelected(true);
 
-				commandManager.executeCommand(
+				ModifyShapeCommand modifyShapeCommand =
 						new ModifyShapeCommand(
 								model,
 								oldDonut,
 								dlgDonut.getDonut(),
-								index));
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
 
 				updateSelectionState();
 
@@ -595,12 +741,15 @@ public class DrawingController {
 
 				dlgCircle.getCircle().setSelected(true);
 
-				commandManager.executeCommand(
+				ModifyShapeCommand modifyShapeCommand =
 						new ModifyShapeCommand(
 								model,
 								oldCircle,
 								dlgCircle.getCircle(),
-								index));
+								index);
+
+				commandManager.executeCommand(modifyShapeCommand);
+				addToLog(modifyShapeCommand.toString());
 
 				updateSelectionState();
 
@@ -640,11 +789,14 @@ public class DrawingController {
 
 		if (option == JOptionPane.YES_OPTION) {
 
-			commandManager.executeCommand(
+			DeleteShapeCommand deleteShapeCommand =
 					new DeleteShapeCommand(
 							model,
 							selectedShapes,
-							selectedIndexes));
+							selectedIndexes);
+
+			commandManager.executeCommand(deleteShapeCommand);
+			addToLog(deleteShapeCommand.toString());
 
 			updateSelectionState();
 

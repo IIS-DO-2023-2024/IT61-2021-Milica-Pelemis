@@ -42,4 +42,25 @@ public class DeleteShapeCommand implements Command {
 					deletedShapes.get(i).clone());
 		}
 	}
+
+	@Override
+	public String toString() {
+
+		StringBuilder log = new StringBuilder("DELETE ");
+
+		for (int i = 0; i < deletedShapes.size(); i++) {
+
+			if (i > 0) {
+				log.append(" | ");
+			}
+
+			log.append("index=")
+				.append(indexes.get(i))
+				.append(" shape=[")
+				.append(ShapeLogFormatter.format(deletedShapes.get(i)))
+				.append("]");
+		}
+
+		return log.toString();
+	}
 }
