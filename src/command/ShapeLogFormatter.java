@@ -45,7 +45,7 @@ public class ShapeLogFormatter {
 			return "RECTANGLE"
 					+ " x=" + rectangle.getUpperLeft().getX()
 					+ " y=" + rectangle.getUpperLeft().getY()
-					+ " width=" + rectangle.getwidth()
+					+ " width=" + rectangle.getWidth()
 					+ " height=" + rectangle.getHeight()
 					+ " edgeColor=" + colorToInt(rectangle.getColor())
 					+ " innerColor=" + colorToInt(rectangle.getInnerColor())

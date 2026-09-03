@@ -10,11 +10,7 @@ public class ModifyShapeCommand implements Command {
 	private Shape newShape;
 	private int index;
 
-	public ModifyShapeCommand(
-			DrawingModel model,
-			Shape oldShape,
-			Shape newShape,
-			int index) {
+	public ModifyShapeCommand(DrawingModel model, Shape oldShape, Shape newShape, int index) {
 
 		this.model = model;
 		this.oldShape = oldShape.clone();
@@ -35,9 +31,6 @@ public class ModifyShapeCommand implements Command {
 	@Override
 	public String toString() {
 
-		return "MODIFY"
-				+ " index=" + index
-				+ " old=[" + ShapeLogFormatter.format(oldShape) + "]"
-				+ " new=[" + ShapeLogFormatter.format(newShape) + "]";
+		return "MODIFY" + " index=" + index + " old=[" + ShapeLogFormatter.format(oldShape) + "]" + " new=[" + ShapeLogFormatter.format(newShape) + "]";
 	}
 }

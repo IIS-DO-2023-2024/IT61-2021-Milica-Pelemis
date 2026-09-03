@@ -8,7 +8,6 @@ public class Line extends Shape{
 	private Point startPoint;
 	private Point endPoint;
 	
-	//Konstruktori
 	
 	public Line () {
 		
@@ -44,19 +43,16 @@ public class Line extends Shape{
 	}
 	
 	
-	//Metoda za izracunavanje duzine linije
 	public double length () {
 		return startPoint.distance(endPoint.getX(), endPoint.getY());
 	}
 	
-	//Metode pristupa
 	public Point getStartPoint () {
 		return startPoint;
 	}
 	
 	public void setStartPoint (Point startPoint) {
 		this.startPoint = startPoint;
-		//metoda klase i parametar metode se nazivaju isto pa zato treba this
 	}
 
 	public Point getEndPoint () {
@@ -82,8 +78,7 @@ public class Line extends Shape{
 	}
 	
 	@Override
-	public void moveTo(int x, int y) {
-	//nece se nista desiti kada pozovemo 	
+	public void moveTo(int x, int y) {	
 		
 	}
 	

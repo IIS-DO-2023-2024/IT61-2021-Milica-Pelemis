@@ -35,14 +35,11 @@ public class DlgCircle extends JDialog {
 	private final Color borderColor = new Color(189, 183, 107);
 	private final Color textColor = new Color(139, 69, 19);
 
-	private final Font titleFont =
-			new Font("Segoe UI", Font.BOLD, 18);
+	private final Font titleFont = new Font("Segoe UI", Font.BOLD, 18);
 
-	private final Font labelFont =
-			new Font("Segoe UI", Font.PLAIN, 13);
+	private final Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-	private final Font buttonFont =
-			new Font("Segoe UI", Font.BOLD, 13);
+	private final Font buttonFont = new Font("Segoe UI", Font.BOLD, 13);
 
 	private JTextField txtX;
 	private JTextField txtY;
@@ -61,8 +58,7 @@ public class DlgCircle extends JDialog {
 
 			DlgCircle dialog = new DlgCircle();
 
-			dialog.setDefaultCloseOperation(
-					JDialog.DISPOSE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 			dialog.setVisible(true);
 		}
@@ -79,11 +75,9 @@ public class DlgCircle extends JDialog {
 		setSize(430, 360);
 		setLocationRelativeTo(null);
 
-		getContentPane().setLayout(
-				new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 
-		getContentPane().setBackground(
-				backgroundColor);
+		getContentPane().setBackground(backgroundColor);
 
 		createHeader();
 		createContent();
@@ -92,166 +86,86 @@ public class DlgCircle extends JDialog {
 
 	private void createHeader() {
 
-		JPanel headerPanel =
-				new JPanel(new BorderLayout());
+		JPanel headerPanel = new JPanel(new BorderLayout());
 
-		headerPanel.setBackground(
-				backgroundColor);
+		headerPanel.setBackground(backgroundColor);
 
-		headerPanel.setBorder(
-				new EmptyBorder(
-						18,
-						20,
-						12,
-						20));
+		headerPanel.setBorder(new EmptyBorder(18, 20, 12, 20));
 
-		JLabel lblTitle =
-				new JLabel("Circle");
+		JLabel lblTitle = new JLabel("Circle");
 
-		lblTitle.setHorizontalAlignment(
-				SwingConstants.CENTER);
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-		lblTitle.setForeground(
-				textColor);
+		lblTitle.setForeground(textColor);
 
-		lblTitle.setFont(
-				titleFont);
+		lblTitle.setFont(titleFont);
 
-		JLabel lblSubtitle =
-				new JLabel(
-						"Enter position, radius and colors");
+		JLabel lblSubtitle = new JLabel("Enter position, radius and colors");
 
-		lblSubtitle.setHorizontalAlignment(
-				SwingConstants.CENTER);
+		lblSubtitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-		lblSubtitle.setForeground(
-				new Color(120, 110, 80));
+		lblSubtitle.setForeground(new Color(120, 110, 80));
 
-		lblSubtitle.setFont(
-				new Font(
-						"Segoe UI",
-						Font.PLAIN,
-						12));
+		lblSubtitle.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
-		JPanel titlePanel =
-				new JPanel(new BorderLayout());
+		JPanel titlePanel = new JPanel(new BorderLayout());
 
 		titlePanel.setOpaque(false);
 
-		titlePanel.add(
-				lblTitle,
-				BorderLayout.NORTH);
+		titlePanel.add(lblTitle, BorderLayout.NORTH);
 
-		titlePanel.add(
-				lblSubtitle,
-				BorderLayout.SOUTH);
+		titlePanel.add(lblSubtitle, BorderLayout.SOUTH);
 
-		headerPanel.add(
-				titlePanel,
-				BorderLayout.CENTER);
+		headerPanel.add(titlePanel, BorderLayout.CENTER);
 
-		getContentPane().add(
-				headerPanel,
-				BorderLayout.NORTH);
+		getContentPane().add(headerPanel, BorderLayout.NORTH);
 	}
 
 	private void createContent() {
 
-		JPanel wrapper =
-				new JPanel(new BorderLayout());
+		JPanel wrapper = new JPanel(new BorderLayout());
 
-		wrapper.setBackground(
-				backgroundColor);
+		wrapper.setBackground(backgroundColor);
 
-		wrapper.setBorder(
-				new EmptyBorder(
-						0,
-						22,
-						12,
-						22));
+		wrapper.setBorder(new EmptyBorder(0, 22, 12, 22));
 
-		JPanel contentPanel =
-				new JPanel(
-						new GridBagLayout());
+		JPanel contentPanel = new JPanel(new GridBagLayout());
 
-		contentPanel.setBackground(
-				panelColor);
+		contentPanel.setBackground(panelColor);
 
-		contentPanel.setBorder(
-				BorderFactory.createCompoundBorder(
-						new LineBorder(
-								borderColor,
-								1,
-								true),
-						new EmptyBorder(
-								18,
-								20,
-								18,
-								20)));
+		contentPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(borderColor, 1, true), new EmptyBorder(18, 20, 18, 20)));
 
 		txtX = createTextField();
-		addInputRow(
-				contentPanel,
-				"X coordinate",
-				txtX,
-				0);
+		addInputRow(contentPanel, "X coordinate", txtX, 0);
 
 		txtY = createTextField();
-		addInputRow(
-				contentPanel,
-				"Y coordinate",
-				txtY,
-				1);
+		addInputRow(contentPanel, "Y coordinate", txtY, 1);
 
 		txtRadius = createTextField();
-		addInputRow(
-				contentPanel,
-				"Radius",
-				txtRadius,
-				2);
+		addInputRow(contentPanel, "Radius", txtRadius, 2);
 
-		btnEdgeColor =
-				createColorButton(
-						"Edge Color",
-						Color.WHITE);
+		btnEdgeColor = createColorButton("Edge Color", Color.WHITE);
 
-		addColorRow(
-				contentPanel,
-				"Edge Color",
-				btnEdgeColor,
-				3);
+		addColorRow(contentPanel, "Edge Color", btnEdgeColor, 3);
 
-		btnFillColor =
-				createColorButton(
-						"Fill Color",
-						Color.WHITE);
+		btnFillColor = createColorButton("Fill Color", Color.WHITE);
 
-		addColorRow(
-				contentPanel,
-				"Fill Color",
-				btnFillColor,
-				4);
+		addColorRow(contentPanel, "Fill Color", btnFillColor, 4);
 
 		btnEdgeColor.addActionListener(
 				new ActionListener() {
 
 			@Override
-			public void actionPerformed(
-					ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-				edgeColor =
-						JColorChooser.showDialog(
-								DlgCircle.this,
-								"Choose edge color",
-								edgeColor);
+				Color selectedColor = JColorChooser.showDialog(DlgCircle.this, "Choose edge color", edgeColor);
 
-				if (edgeColor == null) {
-					edgeColor = Color.BLACK;
+				if (selectedColor != null) {
+
+					edgeColor = selectedColor;
+
+					updateColorButton(btnEdgeColor, edgeColor);
 				}
-
-				updateColorButton(
-						btnEdgeColor,
-						edgeColor);
 			}
 		});
 
@@ -259,270 +173,160 @@ public class DlgCircle extends JDialog {
 				new ActionListener() {
 
 			@Override
-			public void actionPerformed(
-					ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-				innerColor =
-						JColorChooser.showDialog(
-								DlgCircle.this,
-								"Choose fill color",
-								innerColor);
+				Color selectedColor = JColorChooser.showDialog(DlgCircle.this, "Choose fill color", innerColor);
 
-				if (innerColor == null) {
-					innerColor = Color.WHITE;
+				if (selectedColor != null) {
+
+					innerColor = selectedColor;
+
+					updateColorButton(btnFillColor, innerColor);
 				}
-
-				updateColorButton(
-						btnFillColor,
-						innerColor);
 			}
 		});
 
-		wrapper.add(
-				contentPanel,
-				BorderLayout.CENTER);
+		wrapper.add(contentPanel, BorderLayout.CENTER);
 
-		getContentPane().add(
-				wrapper,
-				BorderLayout.CENTER);
+		getContentPane().add(wrapper, BorderLayout.CENTER);
 	}
 
 	private JTextField createTextField() {
 
-		JTextField textField =
-				new JTextField();
+		JTextField textField =new JTextField();
 
-		textField.setPreferredSize(
-				new Dimension(170, 32));
+		textField.setPreferredSize(new Dimension(170, 32));
 
-		textField.setFont(
-				labelFont);
+		textField.setFont(labelFont);
 
-		textField.setForeground(
-				textColor);
+		textField.setForeground(textColor);
 
-		textField.setBackground(
-				Color.WHITE);
+		textField.setBackground(Color.WHITE);
 
-		textField.setBorder(
-				BorderFactory.createCompoundBorder(
-						new LineBorder(
-								borderColor,
-								1,
-								true),
-						new EmptyBorder(
-								4,
-								8,
-								4,
-								8)));
+		textField.setBorder(BorderFactory.createCompoundBorder(new LineBorder(borderColor, 1, true), new EmptyBorder(4, 8, 4, 8)));
 
 		return textField;
 	}
 
-	private void addInputRow(
-			JPanel panel,
-			String text,
-			JTextField textField,
-			int row) {
+	private void addInputRow(JPanel panel, String text, JTextField textField, int row) {
 
-		JLabel label =
-				createLabel(text);
+		JLabel label = createLabel(text);
 
-		GridBagConstraints gbcLabel =
-				new GridBagConstraints();
+		GridBagConstraints gbcLabel = new GridBagConstraints();
 
 		gbcLabel.gridx = 0;
 		gbcLabel.gridy = row;
 
-		gbcLabel.anchor =
-				GridBagConstraints.WEST;
+		gbcLabel.anchor = GridBagConstraints.WEST;
 
-		gbcLabel.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						18);
+		gbcLabel.insets = new Insets(5, 0, 5, 18);
 
-		panel.add(
-				label,
-				gbcLabel);
+		panel.add(label, gbcLabel);
 
-		GridBagConstraints gbcField =
-				new GridBagConstraints();
+		GridBagConstraints gbcField = new GridBagConstraints();
 
 		gbcField.gridx = 1;
 		gbcField.gridy = row;
 		gbcField.weightx = 1.0;
 
-		gbcField.fill =
-				GridBagConstraints.HORIZONTAL;
+		gbcField.fill = GridBagConstraints.HORIZONTAL;
 
-		gbcField.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						0);
+		gbcField.insets = new Insets(5, 0, 5, 0);
 
-		panel.add(
-				textField,
-				gbcField);
+		panel.add(textField, gbcField);
 	}
 
-	private void addColorRow(
-			JPanel panel,
-			String text,
-			JButton button,
-			int row) {
+	private void addColorRow(JPanel panel, String text, JButton button, int row) {
 
-		JLabel label =
-				createLabel(text);
+		JLabel label = createLabel(text);
 
-		GridBagConstraints gbcLabel =
-				new GridBagConstraints();
+		GridBagConstraints gbcLabel = new GridBagConstraints();
 
 		gbcLabel.gridx = 0;
 		gbcLabel.gridy = row;
 
-		gbcLabel.anchor =
-				GridBagConstraints.WEST;
+		gbcLabel.anchor = GridBagConstraints.WEST;
 
-		gbcLabel.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						18);
+		gbcLabel.insets = new Insets(5, 0, 5, 18);
 
-		panel.add(
-				label,
-				gbcLabel);
+		panel.add(label, gbcLabel);
 
-		GridBagConstraints gbcButton =
-				new GridBagConstraints();
+		GridBagConstraints gbcButton = new GridBagConstraints();
 
 		gbcButton.gridx = 1;
 		gbcButton.gridy = row;
 		gbcButton.weightx = 1.0;
 
-		gbcButton.fill =
-				GridBagConstraints.HORIZONTAL;
+		gbcButton.fill = GridBagConstraints.HORIZONTAL;
 
-		gbcButton.insets =
-				new Insets(
-						5,
-						0,
-						5,
-						0);
+		gbcButton.insets = new Insets(5, 0, 5, 0);
 
-		panel.add(
-				button,
-				gbcButton);
+		panel.add(button, gbcButton);
 	}
 
-	private JLabel createLabel(
-			String text) {
+	private JLabel createLabel(String text) {
 
-		JLabel label =
-				new JLabel(text + ":");
+		JLabel label = new JLabel(text + ":");
 
-		label.setFont(
-				labelFont);
+		label.setFont(labelFont);
 
-		label.setForeground(
-				textColor);
+		label.setForeground(textColor);
 
 		return label;
 	}
 
-	private JButton createColorButton(
-			String text,
-			Color color) {
+	private JButton createColorButton(String text, Color color) {
 
-		JButton button =
-				new JButton(text);
+		JButton button =new JButton(text);
 
-		button.setFont(
-				buttonFont);
+		button.setFont(buttonFont);
 
-		button.setPreferredSize(
-				new Dimension(170, 32));
+		button.setPreferredSize(new Dimension(170, 32));
 
 		button.setFocusPainted(false);
 
-		button.setBorder(
-				new LineBorder(
-						borderColor,
-						1,
-						true));
+		button.setBorder(new LineBorder(borderColor, 1, true));
 
-		updateColorButton(
-				button,
-				color);
+		updateColorButton(button, color);
 
 		return button;
 	}
 
-	private void updateColorButton(
-			JButton button,
-			Color color) {
+	private void updateColorButton(JButton button, Color color) {
 
 		if (color == null) {
 			color = Color.WHITE;
 		}
 
-		button.setBackground(
-				color);
+		button.setBackground(color);
 
-		int brightness =
-				(color.getRed() * 299
-				+ color.getGreen() * 587
-				+ color.getBlue() * 114)
-				/ 1000;
+		int brightness = (color.getRed() * 299 + color.getGreen() * 587 + color.getBlue() * 114) / 1000;
 
 		if (brightness < 140) {
-			button.setForeground(
-					Color.WHITE);
+			button.setForeground(Color.WHITE);
 		}
 		else {
-			button.setForeground(
-					textColor);
+			button.setForeground(textColor);
 		}
 	}
 
 	private void createButtons() {
 
-		JPanel buttonPanel =
-				new JPanel(
-						new FlowLayout(
-								FlowLayout.CENTER,
-								12,
-								12));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 12));
 
-		buttonPanel.setBackground(
-				backgroundColor);
+		buttonPanel.setBackground(backgroundColor);
 
-		buttonPanel.setBorder(
-				new EmptyBorder(
-						0,
-						0,
-						8,
-						0));
+		buttonPanel.setBorder(new EmptyBorder(0, 0, 8, 0));
 
-		JButton btnOk =
-				createActionButton("OK");
+		JButton btnOk = createActionButton("OK");
 
-		JButton btnCancel =
-				createActionButton("Cancel");
+		JButton btnCancel = createActionButton("Cancel");
 
 		btnOk.addActionListener(
 				new ActionListener() {
 
 			@Override
-			public void actionPerformed(
-					ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e) {
 				saveCircle();
 			}
 		});
@@ -531,9 +335,7 @@ public class DlgCircle extends JDialog {
 				new ActionListener() {
 
 			@Override
-			public void actionPerformed(
-					ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
@@ -541,39 +343,26 @@ public class DlgCircle extends JDialog {
 		buttonPanel.add(btnOk);
 		buttonPanel.add(btnCancel);
 
-		getRootPane().setDefaultButton(
-				btnOk);
+		getRootPane().setDefaultButton(btnOk);
 
-		getContentPane().add(
-				buttonPanel,
-				BorderLayout.SOUTH);
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 	}
 
-	private JButton createActionButton(
-			String text) {
+	private JButton createActionButton(String text) {
 
-		JButton button =
-				new JButton(text);
+		JButton button =new JButton(text);
 
-		button.setPreferredSize(
-				new Dimension(105, 34));
+		button.setPreferredSize(new Dimension(105, 34));
 
-		button.setFont(
-				buttonFont);
+		button.setFont(buttonFont);
 
-		button.setForeground(
-				textColor);
+		button.setForeground(textColor);
 
-		button.setBackground(
-				Color.WHITE);
+		button.setBackground(Color.WHITE);
 
 		button.setFocusPainted(false);
 
-		button.setBorder(
-				new LineBorder(
-						borderColor,
-						1,
-						true));
+		button.setBorder(new LineBorder(borderColor, 1, true));
 
 		return button;
 	}
@@ -582,48 +371,26 @@ public class DlgCircle extends JDialog {
 
 		try {
 
-			int x =
-					Integer.parseInt(
-							txtX.getText());
+			int x = Integer.parseInt(txtX.getText());
 
-			int y =
-					Integer.parseInt(
-							txtY.getText());
+			int y = Integer.parseInt(txtY.getText());
 
-			int radius =
-					Integer.parseInt(
-							txtRadius.getText());
+			int radius = Integer.parseInt(txtRadius.getText());
 
-			if (x < 0
-					|| y < 0
-					|| radius < 1) {
+			if (x < 0 || y < 0 || radius < 1) {
 
-				JOptionPane.showMessageDialog(
-						this,
-						"Numbers must be positive!",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Numbers must be positive!", "Error", JOptionPane.ERROR_MESSAGE);
 
 				return;
 			}
 
-			circle =
-					new Circle(
-							new Point(x, y),
-							radius,
-							false,
-							edgeColor,
-							innerColor);
+			circle = new Circle(new Point(x, y), radius, false, edgeColor, innerColor);
 
 			dispose();
 		}
 		catch (Exception exception) {
 
-			JOptionPane.showMessageDialog(
-					this,
-					"Invalid character found!",
-					"Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Invalid character found!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -633,37 +400,28 @@ public class DlgCircle extends JDialog {
 
 	public void setCircle(Circle c) {
 
-		txtX.setText(
-				"" + c.getCenter().getX());
+		txtX.setText("" + c.getCenter().getX());
 
-		txtY.setText(
-				"" + c.getCenter().getY());
+		txtY.setText("" + c.getCenter().getY());
 
-		txtRadius.setText(
-				"" + c.getRadius());
+		txtRadius.setText("" + c.getRadius());
 
 		edgeColor = c.getColor();
 		innerColor = c.getInnerColor();
 
-		updateColorButton(
-				btnEdgeColor,
-				edgeColor);
+		updateColorButton(btnEdgeColor, edgeColor);
 
-		updateColorButton(
-				btnFillColor,
-				innerColor);
+		updateColorButton(btnFillColor, innerColor);
 	}
 
 	public void setPoint(Point p) {
 
-		txtX.setText(
-				"" + p.getX());
+		txtX.setText("" + p.getX());
 
-		txtY.setText(
-				"" + p.getY());
+		txtY.setText("" + p.getY());
 	}
 
-	public Color getEggeColor() {
+	public Color getEdgeColor() {
 		return edgeColor;
 	}
 
@@ -671,23 +429,17 @@ public class DlgCircle extends JDialog {
 		return innerColor;
 	}
 
-	public void setColor(
-			Color edgeColor) {
+	public void setColor(Color edgeColor) {
 
 		this.edgeColor = edgeColor;
 
-		updateColorButton(
-				btnEdgeColor,
-				edgeColor);
+		updateColorButton(btnEdgeColor, edgeColor);
 	}
 
-	public void setInnerConor(
-			Color innerColor) {
+	public void setInnerColor(Color innerColor) {
 
 		this.innerColor = innerColor;
-
-		updateColorButton(
-				btnFillColor,
-				innerColor);
+ 
+		updateColorButton(btnFillColor, innerColor);
 	}
 }

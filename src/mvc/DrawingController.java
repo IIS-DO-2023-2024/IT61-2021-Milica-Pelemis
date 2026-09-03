@@ -81,10 +81,7 @@ public class DrawingController {
 		this.model = model;
 		this.frame = frame;
 
-		selectionSubject.addObserver(
-				new SelectionButtonsObserver(
-						frame.getTglBtnModify(),
-						frame.getTglBtnDelete()));
+		selectionSubject.addObserver(new SelectionButtonsObserver(frame.getTglBtnModify(),frame.getTglBtnDelete()));
 
 		frame.getTglBtnModify().addActionListener(e -> modifySelectedShape());
 
@@ -144,18 +141,10 @@ public class DrawingController {
 					s.setSelected(!s.isSelected());
 
 					if (s.isSelected()) {
-						addToLog(
-								"SELECT index=" + index
-								+ " shape=["
-								+ ShapeLogFormatter.format(s)
-								+ "]");
+						addToLog("SELECT index=" + index + " shape=[" + ShapeLogFormatter.format(s) + "]");
 					}
 					else {
-						addToLog(
-								"DESELECT index=" + index
-								+ " shape=["
-								+ ShapeLogFormatter.format(s)
-								+ "]");
+						addToLog("DESELECT index=" + index + " shape=[" + ShapeLogFormatter.format(s) + "]");
 					}
 
 					updateSelectionState();
@@ -173,11 +162,7 @@ public class DrawingController {
 
 					shape.setSelected(false);
 
-					addToLog(
-							"DESELECT index=" + i
-							+ " shape=["
-							+ ShapeLogFormatter.format(shape)
-							+ "]");
+					addToLog("DESELECT index=" + i + " shape=[" + ShapeLogFormatter.format(shape) + "]");
 				}
 			}
 
@@ -199,9 +184,7 @@ public class DrawingController {
 
 			if (dlgPoint.getPoint() != null) {
 
-				AddShapeCommand addShapeCommand = new AddShapeCommand(
-						model,
-						dlgPoint.getPoint());
+				AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgPoint.getPoint());
 
 				commandManager.executeCommand(addShapeCommand);
 				addToLog(addShapeCommand.toString());
@@ -229,9 +212,7 @@ public class DrawingController {
 
 				if (dlgLine.getLine() != null) {
 
-					AddShapeCommand addShapeCommand = new AddShapeCommand(
-							model,
-							dlgLine.getLine());
+					AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgLine.getLine());
 
 					commandManager.executeCommand(addShapeCommand);
 					addToLog(addShapeCommand.toString());
@@ -261,9 +242,7 @@ public class DrawingController {
 
 			if (dlgRectangle.getRectangle() != null) {
 
-				AddShapeCommand addShapeCommand = new AddShapeCommand(
-						model,
-						dlgRectangle.getRectangle());
+				AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgRectangle.getRectangle());
 
 				commandManager.executeCommand(addShapeCommand);
 				addToLog(addShapeCommand.toString());
@@ -283,14 +262,12 @@ public class DrawingController {
 
 			dlgCircle.setPoint(mouseClick);
 			dlgCircle.setColor(edgeColor);
-			dlgCircle.setInnerConor(innerColor);
+			dlgCircle.setInnerColor(innerColor);
 			dlgCircle.setVisible(true);
 
 			if (dlgCircle.getCircle() != null) {
 
-				AddShapeCommand addShapeCommand = new AddShapeCommand(
-						model,
-						dlgCircle.getCircle());
+				AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgCircle.getCircle());
 
 				commandManager.executeCommand(addShapeCommand);
 				addToLog(addShapeCommand.toString());
@@ -314,9 +291,7 @@ public class DrawingController {
 
 			if (dlgDonut.getDonut() != null) {
 
-				AddShapeCommand addShapeCommand = new AddShapeCommand(
-						model,
-						dlgDonut.getDonut());
+				AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgDonut.getDonut());
 
 				commandManager.executeCommand(addShapeCommand);
 				addToLog(addShapeCommand.toString());
@@ -340,9 +315,7 @@ public class DrawingController {
 
 			if (dlgHexagon.getHexagon() != null) {
 
-				AddShapeCommand addShapeCommand = new AddShapeCommand(
-						model,
-						dlgHexagon.getHexagon());
+				AddShapeCommand addShapeCommand = new AddShapeCommand(model, dlgHexagon.getHexagon());
 
 				commandManager.executeCommand(addShapeCommand);
 				addToLog(addShapeCommand.toString());
@@ -361,8 +334,7 @@ public class DrawingController {
 	private void addToLog(String text) {
 
 		frame.getTextArea().append(text + System.lineSeparator());
-		frame.getTextArea().setCaretPosition(
-				frame.getTextArea().getDocument().getLength());
+		frame.getTextArea().setCaretPosition(frame.getTextArea().getDocument().getLength());
 	}
 
 
@@ -383,17 +355,13 @@ public class DrawingController {
 
 			int selectedIndex = getSelectedShapeIndex();
 
-			frame.getTglBtnToFront().setEnabled(
-					selectedIndex < model.size() - 1);
+			frame.getTglBtnToFront().setEnabled(selectedIndex < model.size() - 1);
 
-			frame.getTglBtnToBack().setEnabled(
-					selectedIndex > 0);
+			frame.getTglBtnToBack().setEnabled(selectedIndex > 0);
 
-			frame.getTglBtnBringToFront().setEnabled(
-					selectedIndex < model.size() - 1);
+			frame.getTglBtnBringToFront().setEnabled(selectedIndex < model.size() - 1);
 
-			frame.getTglBtnBringToBack().setEnabled(
-					selectedIndex > 0);
+			frame.getTglBtnBringToBack().setEnabled(selectedIndex > 0);
 		}
 		else {
 
@@ -407,15 +375,13 @@ public class DrawingController {
 
 	private void updateUndoButton() {
 
-		frame.getTglBtnUndo().setEnabled(
-				commandManager.canUndo());
+		frame.getTglBtnUndo().setEnabled(commandManager.canUndo());
 	}
 
 
 	private void updateRedoButton() {
 
-		frame.getTglBtnRedo().setEnabled(
-				commandManager.canRedo());
+		frame.getTglBtnRedo().setEnabled(commandManager.canRedo());
 	}
 
 
@@ -475,10 +441,7 @@ public class DrawingController {
 			return;
 		}
 
-		ToFrontCommand toFrontCommand =
-				new ToFrontCommand(
-						model,
-						index);
+		ToFrontCommand toFrontCommand = new ToFrontCommand(model, index);
 
 		commandManager.executeCommand(toFrontCommand);
 		addToLog(toFrontCommand.toString());
@@ -504,10 +467,7 @@ public class DrawingController {
 			return;
 		}
 
-		ToBackCommand toBackCommand =
-				new ToBackCommand(
-						model,
-						index);
+		ToBackCommand toBackCommand = new ToBackCommand(model, index);
 
 		commandManager.executeCommand(toBackCommand);
 		addToLog(toBackCommand.toString());
@@ -533,10 +493,7 @@ public class DrawingController {
 			return;
 		}
 
-		BringToFrontCommand bringToFrontCommand =
-				new BringToFrontCommand(
-						model,
-						index);
+		BringToFrontCommand bringToFrontCommand = new BringToFrontCommand(model, index);
 
 		commandManager.executeCommand(bringToFrontCommand);
 		addToLog(bringToFrontCommand.toString());
@@ -562,10 +519,7 @@ public class DrawingController {
 			return;
 		}
 
-		BringToBackCommand bringToBackCommand =
-				new BringToBackCommand(
-						model,
-						index);
+		BringToBackCommand bringToBackCommand = new BringToBackCommand(model, index);
 
 		commandManager.executeCommand(bringToBackCommand);
 		addToLog(bringToBackCommand.toString());
@@ -582,10 +536,7 @@ public class DrawingController {
 	
 	private void chooseInnerColor() {
 
-		Color selectedColor = JColorChooser.showDialog(
-				frame,
-				"Choose inside color",
-				innerColor);
+		Color selectedColor = JColorChooser.showDialog(frame, "Choose inside color", innerColor);
 
 		if (selectedColor != null) {
 			innerColor = selectedColor;
@@ -598,10 +549,7 @@ public class DrawingController {
 
 	private void chooseEdgeColor() {
 
-		Color selectedColor = JColorChooser.showDialog(
-				frame,
-				"Choose outside color",
-				edgeColor);
+		Color selectedColor = JColorChooser.showDialog(frame, "Choose outside color", edgeColor);
 
 		if (selectedColor != null) {
 			edgeColor = selectedColor;
@@ -617,21 +565,15 @@ public class DrawingController {
 		frame.getTglBtnInsideColor().setBackground(innerColor);
 		frame.getTglBtnOutsideColor().setBackground(edgeColor);
 
-		frame.getTglBtnInsideColor().setForeground(
-				getTextColorForBackground(innerColor));
+		frame.getTglBtnInsideColor().setForeground(getTextColorForBackground(innerColor));
 
-		frame.getTglBtnOutsideColor().setForeground(
-				getTextColorForBackground(edgeColor));
+		frame.getTglBtnOutsideColor().setForeground(getTextColorForBackground(edgeColor));
 	}
 
 
 	private Color getTextColorForBackground(Color backgroundColor) {
 
-		int brightness =
-				(backgroundColor.getRed() * 299
-				+ backgroundColor.getGreen() * 587
-				+ backgroundColor.getBlue() * 114)
-				/ 1000;
+		int brightness = (backgroundColor.getRed() * 299 + backgroundColor.getGreen() * 587 + backgroundColor.getBlue() * 114) / 1000;
 
 		if (brightness < 140) {
 			return Color.WHITE;
@@ -690,12 +632,7 @@ public class DrawingController {
 
 				dlgPoint.getPoint().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldPoint,
-								dlgPoint.getPoint(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldPoint, dlgPoint.getPoint(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -722,12 +659,7 @@ public class DrawingController {
 
 				dlgLine.getLine().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldLine,
-								dlgLine.getLine(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldLine, dlgLine.getLine(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -754,12 +686,7 @@ public class DrawingController {
 
 				dlgRectangle.getRectangle().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldRectangle,
-								dlgRectangle.getRectangle(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldRectangle, dlgRectangle.getRectangle(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -775,8 +702,7 @@ public class DrawingController {
 
 		else if (shape instanceof HexagonAdapter) {
 
-			HexagonAdapter oldHexagon =
-					(HexagonAdapter) shape.clone();
+			HexagonAdapter oldHexagon = (HexagonAdapter) shape.clone();
 
 			DlgHexagon dlgHexagon = new DlgHexagon();
 
@@ -787,12 +713,7 @@ public class DrawingController {
 
 				dlgHexagon.getHexagon().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldHexagon,
-								dlgHexagon.getHexagon(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldHexagon, dlgHexagon.getHexagon(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -819,12 +740,7 @@ public class DrawingController {
 
 				dlgDonut.getDonut().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldDonut,
-								dlgDonut.getDonut(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldDonut, dlgDonut.getDonut(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -851,12 +767,7 @@ public class DrawingController {
 
 				dlgCircle.getCircle().setSelected(true);
 
-				ModifyShapeCommand modifyShapeCommand =
-						new ModifyShapeCommand(
-								model,
-								oldCircle,
-								dlgCircle.getCircle(),
-								index);
+				ModifyShapeCommand modifyShapeCommand = new ModifyShapeCommand(model, oldCircle, dlgCircle.getCircle(), index);
 
 				commandManager.executeCommand(modifyShapeCommand);
 				addToLog(modifyShapeCommand.toString());
@@ -890,20 +801,11 @@ public class DrawingController {
 			return;
 		}
 
-		int option = JOptionPane.showConfirmDialog(
-				frame,
-				"Do you really want to delete selected shape(s)?",
-				"Delete",
-				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
+		int option = JOptionPane.showConfirmDialog(frame, "Do you really want to delete selected shape(s)?", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (option == JOptionPane.YES_OPTION) {
 
-			DeleteShapeCommand deleteShapeCommand =
-					new DeleteShapeCommand(
-							model,
-							selectedShapes,
-							selectedIndexes);
+			DeleteShapeCommand deleteShapeCommand = new DeleteShapeCommand(model, selectedShapes, selectedIndexes);
 
 			commandManager.executeCommand(deleteShapeCommand);
 			addToLog(deleteShapeCommand.toString());
@@ -923,41 +825,25 @@ public class DrawingController {
 		JFileChooser fileChooser = new JFileChooser();
 
 		fileChooser.setDialogTitle("Save command log");
-		fileChooser.setFileFilter(
-				new FileNameExtensionFilter(
-						"Text files (*.txt)",
-						"txt"));
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
 
-		if (fileChooser.showSaveDialog(frame)
-				== JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
 
-			File file = addExtension(
-					fileChooser.getSelectedFile(),
-					".txt");
+			File file = addExtension(fileChooser.getSelectedFile(), ".txt");
 
 			SaveContext saveContext = new SaveContext();
 
-			saveContext.setStrategy(
-					new LogSaveStrategy(
-							frame.getTextArea().getText()));
+			saveContext.setStrategy(new LogSaveStrategy(frame.getTextArea().getText()));
 
 			try {
 
 				saveContext.save(file);
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Command log saved successfully.",
-						"Save Log",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Command log saved successfully.", "Save Log", JOptionPane.INFORMATION_MESSAGE);
 			}
 			catch (IOException e) {
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Error while saving command log.",
-						"Save Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Error while saving command log.", "Save Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -968,40 +854,25 @@ public class DrawingController {
 		JFileChooser fileChooser = new JFileChooser();
 
 		fileChooser.setDialogTitle("Save drawing");
-		fileChooser.setFileFilter(
-				new FileNameExtensionFilter(
-						"Serialized drawing (*.ser)",
-						"ser"));
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized drawing (*.ser)", "ser"));
 
-		if (fileChooser.showSaveDialog(frame)
-				== JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
 
-			File file = addExtension(
-					fileChooser.getSelectedFile(),
-					".ser");
+			File file = addExtension(fileChooser.getSelectedFile(), ".ser");
 
 			SaveContext saveContext = new SaveContext();
 
-			saveContext.setStrategy(
-					new DrawingSaveStrategy(model));
+			saveContext.setStrategy(new DrawingSaveStrategy(model));
 
 			try {
 
 				saveContext.save(file);
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Drawing saved successfully.",
-						"Save Drawing",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Drawing saved successfully.", "Save Drawing", JOptionPane.INFORMATION_MESSAGE);
 			}
 			catch (IOException e) {
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Error while saving drawing.",
-						"Save Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Error while saving drawing.", "Save Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -1012,21 +883,15 @@ public class DrawingController {
 		JFileChooser fileChooser = new JFileChooser();
 
 		fileChooser.setDialogTitle("Load drawing");
-		fileChooser.setFileFilter(
-				new FileNameExtensionFilter(
-						"Serialized drawing (*.ser)",
-						"ser"));
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Serialized drawing (*.ser)", "ser"));
 
-		if (fileChooser.showOpenDialog(frame)
-				== JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
 
 			File file = fileChooser.getSelectedFile();
 
 			try {
 
-				ObjectInputStream input =
-						new ObjectInputStream(
-								new FileInputStream(file));
+				ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
 
 				Object loadedObject = input.readObject();
 
@@ -1034,11 +899,7 @@ public class DrawingController {
 
 				if (!(loadedObject instanceof List<?>)) {
 
-					JOptionPane.showMessageDialog(
-							frame,
-							"Selected file does not contain a valid drawing.",
-							"Load Error",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Selected file does not contain a valid drawing.", "Load Error", JOptionPane.ERROR_MESSAGE);
 
 					return;
 				}
@@ -1050,11 +911,7 @@ public class DrawingController {
 
 					if (!(object instanceof Shape)) {
 
-						JOptionPane.showMessageDialog(
-								frame,
-								"Selected file does not contain a valid drawing.",
-								"Load Error",
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Selected file does not contain a valid drawing.", "Load Error", JOptionPane.ERROR_MESSAGE);
 
 						return;
 					}
@@ -1077,19 +934,11 @@ public class DrawingController {
 
 				frame.getView().repaint();
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Drawing loaded successfully.",
-						"Load Drawing",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Drawing loaded successfully.", "Load Drawing", JOptionPane.INFORMATION_MESSAGE);
 			}
 			catch (IOException | ClassNotFoundException e) {
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Error while loading drawing.",
-						"Load Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Error while loading drawing.", "Load Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -1100,13 +949,9 @@ public class DrawingController {
 		JFileChooser fileChooser = new JFileChooser();
 
 		fileChooser.setDialogTitle("Load command log");
-		fileChooser.setFileFilter(
-				new FileNameExtensionFilter(
-						"Text files (*.txt)",
-						"txt"));
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
 
-		if (fileChooser.showOpenDialog(frame)
-				== JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
 
 			File file = fileChooser.getSelectedFile();
 
@@ -1114,9 +959,7 @@ public class DrawingController {
 
 			try {
 
-				BufferedReader reader =
-						new BufferedReader(
-								new FileReader(file));
+				BufferedReader reader = new BufferedReader(new FileReader(file));
 
 				String line;
 
@@ -1131,22 +974,14 @@ public class DrawingController {
 			}
 			catch (IOException e) {
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Error while loading command log.",
-						"Load Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Error while loading command log.", "Load Error", JOptionPane.ERROR_MESSAGE);
 
 				return;
 			}
 
 			if (lines.isEmpty()) {
 
-				JOptionPane.showMessageDialog(
-						frame,
-						"Selected command log is empty.",
-						"Load Log",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Selected command log is empty.", "Load Log", JOptionPane.INFORMATION_MESSAGE);
 
 				return;
 			}
@@ -1170,11 +1005,7 @@ public class DrawingController {
 
 			frame.getView().repaint();
 
-			JOptionPane.showMessageDialog(
-					frame,
-					"Command log loaded. Use Load Next to execute commands step by step.",
-					"Load Log",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(frame, "Command log loaded. Use Load Next to execute commands step by step.", "Load Log", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -1214,14 +1045,7 @@ public class DrawingController {
 
 			frame.getTglBtnLoadNext().setEnabled(false);
 
-			JOptionPane.showMessageDialog(
-					frame,
-					"Error in log line "
-							+ (loadedLogIndex + 1)
-							+ ":\n"
-							+ logLine,
-					"Load Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, "Error in log line " + (loadedLogIndex + 1) + ":\n" + logLine, "Load Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -1230,14 +1054,9 @@ public class DrawingController {
 
 		if (logLine.startsWith("ADD ")) {
 
-			Shape shape =
-					ShapeLogParser.parseShape(
-							logLine.substring("ADD ".length()));
+			Shape shape = ShapeLogParser.parseShape(logLine.substring("ADD ".length()));
 
-			commandManager.executeCommand(
-					new AddShapeCommand(
-							model,
-							shape));
+			commandManager.executeCommand(new AddShapeCommand(model, shape));
 
 			return;
 		}
@@ -1251,93 +1070,56 @@ public class DrawingController {
 				throw new IllegalArgumentException();
 			}
 
-			int index = Integer.parseInt(
-					logLine.substring(
-							"MODIFY index=".length(),
-							oldMarker));
+			int index = Integer.parseInt(logLine.substring("MODIFY index=".length(), oldMarker));
 
-			String oldShapeText =
-					logLine.substring(
-							oldMarker + " old=[".length(),
-							newMarker);
+			String oldShapeText = logLine.substring(oldMarker + " old=[".length(), newMarker);
 
-			String newShapeText =
-					logLine.substring(
-							newMarker + "] new=[".length(),
-							logLine.length() - 1);
+			String newShapeText = logLine.substring(newMarker + "] new=[".length(), logLine.length() - 1);
 
-			Shape oldShape =
-					ShapeLogParser.parseShape(oldShapeText);
+			Shape oldShape = ShapeLogParser.parseShape(oldShapeText);
 
-			Shape newShape =
-					ShapeLogParser.parseShape(newShapeText);
+			Shape newShape = ShapeLogParser.parseShape(newShapeText);
 
-			commandManager.executeCommand(
-					new ModifyShapeCommand(
-							model,
-							oldShape,
-							newShape,
-							index));
+			commandManager.executeCommand(new ModifyShapeCommand(model, oldShape, newShape, index));
 
 			return;
 		}
 
 		if (logLine.startsWith("DELETE ")) {
 
-			String deleteText =
-					logLine.substring("DELETE ".length());
+			String deleteText = logLine.substring("DELETE ".length());
 
-			String[] deletedParts =
-					deleteText.split(" \\| ");
+			String[] deletedParts = deleteText.split(" \\| ");
 
-			List<Shape> deletedShapes =
-					new ArrayList<Shape>();
+			List<Shape> deletedShapes = new ArrayList<Shape>();
 
-			List<Integer> deletedIndexes =
-					new ArrayList<Integer>();
+			List<Integer> deletedIndexes = new ArrayList<Integer>();
 
 			for (String part : deletedParts) {
 
 				int shapeMarker = part.indexOf(" shape=[");
 
-				if (shapeMarker == -1
-						|| !part.endsWith("]")) {
+				if (shapeMarker == -1 || !part.endsWith("]")) {
 
 					throw new IllegalArgumentException();
 				}
 
-				int index = Integer.parseInt(
-						part.substring(
-								"index=".length(),
-								shapeMarker));
+				int index = Integer.parseInt(part.substring("index=".length(), shapeMarker));
 
-				String shapeText =
-						part.substring(
-								shapeMarker
-								+ " shape=[".length(),
-								part.length() - 1);
+				String shapeText = part.substring(shapeMarker + " shape=[".length(), part.length() - 1);
 
 				deletedIndexes.add(index);
-				deletedShapes.add(
-						ShapeLogParser.parseShape(
-								shapeText));
+				deletedShapes.add(ShapeLogParser.parseShape(shapeText));
 			}
 
-			commandManager.executeCommand(
-					new DeleteShapeCommand(
-							model,
-							deletedShapes,
-							deletedIndexes));
+			commandManager.executeCommand(new DeleteShapeCommand(model, deletedShapes, deletedIndexes));
 
 			return;
 		}
 
 		if (logLine.startsWith("SELECT index=")) {
 
-			int index =
-					getLogIndex(
-							logLine,
-							"SELECT index=");
+			int index = getLogIndex(logLine, "SELECT index=");
 
 			model.get(index).setSelected(true);
 			return;
@@ -1345,10 +1127,7 @@ public class DrawingController {
 
 		if (logLine.startsWith("DESELECT index=")) {
 
-			int index =
-					getLogIndex(
-							logLine,
-							"DESELECT index=");
+			int index = getLogIndex(logLine, "DESELECT index=");
 
 			model.get(index).setSelected(false);
 			return;
@@ -1356,60 +1135,36 @@ public class DrawingController {
 
 		if (logLine.startsWith("TO_FRONT ")) {
 
-			int oldIndex =
-					getLogValue(
-							logLine,
-							"oldIndex=");
+			int oldIndex =getLogValue(logLine, "oldIndex=");
 
-			commandManager.executeCommand(
-					new ToFrontCommand(
-							model,
-							oldIndex));
+			commandManager.executeCommand(new ToFrontCommand(model, oldIndex));
 
 			return;
 		}
 
 		if (logLine.startsWith("TO_BACK ")) {
 
-			int oldIndex =
-					getLogValue(
-							logLine,
-							"oldIndex=");
+			int oldIndex = getLogValue(logLine, "oldIndex=");
 
-			commandManager.executeCommand(
-					new ToBackCommand(
-							model,
-							oldIndex));
+			commandManager.executeCommand(new ToBackCommand(model, oldIndex));
 
 			return;
 		}
 
 		if (logLine.startsWith("BRING_TO_FRONT ")) {
 
-			int oldIndex =
-					getLogValue(
-							logLine,
-							"oldIndex=");
+			int oldIndex = getLogValue(logLine, "oldIndex=");
 
-			commandManager.executeCommand(
-					new BringToFrontCommand(
-							model,
-							oldIndex));
+			commandManager.executeCommand(new BringToFrontCommand(model, oldIndex));
 
 			return;
 		}
 
 		if (logLine.startsWith("BRING_TO_BACK ")) {
 
-			int oldIndex =
-					getLogValue(
-							logLine,
-							"oldIndex=");
+			int oldIndex =getLogValue(logLine, "oldIndex=");
 
-			commandManager.executeCommand(
-					new BringToBackCommand(
-							model,
-							oldIndex));
+			commandManager.executeCommand(new BringToBackCommand(model, oldIndex));
 
 			return;
 		}
@@ -1448,16 +1203,11 @@ public class DrawingController {
 			throw new IllegalArgumentException();
 		}
 
-		return Integer.parseInt(
-				logLine.substring(
-						prefix.length(),
-						shapeMarker));
+		return Integer.parseInt(logLine.substring(prefix.length(), shapeMarker));
 	}
 
 
-	private int getLogValue(
-			String logLine,
-			String key) {
+	private int getLogValue(String logLine, String key) {
 
 		int start = logLine.indexOf(key);
 
@@ -1478,17 +1228,11 @@ public class DrawingController {
 	}
 
 
-	private File addExtension(
-			File file,
-			String extension) {
+	private File addExtension(File file, String extension) {
 
-		if (!file.getName()
-				.toLowerCase()
-				.endsWith(extension)) {
+		if (!file.getName().toLowerCase().endsWith(extension)) {
 
-			return new File(
-					file.getAbsolutePath()
-					+ extension);
+			return new File(file.getAbsolutePath() + extension);
 		}
 
 		return file;
@@ -1498,9 +1242,22 @@ public class DrawingController {
 	public void setOperationDrawing() {
 
 		activeOperation = OPERATION_DRAWING;
+		
+		int index = 0;
 
 		for (Shape shape : model.getShapes()) {
-			shape.setSelected(false);
+			
+			if (shape.isSelected()) {
+				
+		        shape.setSelected(false);
+
+		        addToLog("DESELECT index=" + index + " shape=[" + ShapeLogFormatter.format(shape) + "]"
+		        );
+		    } else {
+		        shape.setSelected(false);
+		    }
+
+		    index++;
 		}
 
 		frame.getTglBtnModify().setEnabled(false);

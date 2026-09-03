@@ -11,6 +11,7 @@ import geometry.Shape;
 public class DrawingView extends JPanel {
 
 	public DrawingView() {
+		
 		setBackground(Color.WHITE);
 		setOpaque(true);
 	}
@@ -18,6 +19,7 @@ public class DrawingView extends JPanel {
 	private DrawingModel model = new DrawingModel();
 
 	public DrawingModel getModel() {
+		
 		return model;
 	}
 
@@ -26,8 +28,11 @@ public class DrawingView extends JPanel {
 	}
 
 	public void paint(Graphics g) {
+		
 		super.paint(g);
+		
 		ListIterator<Shape> it = model.getShapes().listIterator();
+		
 		while (it.hasNext()) {
 			it.next().draw(g);
 		}

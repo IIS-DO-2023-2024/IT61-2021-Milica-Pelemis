@@ -15,13 +15,11 @@ public class Point extends Shape{
 		double d = Math.sqrt(dx*dx+ dy*dy);
 		return d;
 	}
-	//Konstruktori 
 	
 	public Point () {
 		
 	}
 	
-	//poziva se u pozadini
 	public Point (int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -55,22 +53,17 @@ public class Point extends Shape{
 		
 	}
 	
-	//Metode pristupa 
-	//GET i SET metode
-	//za x promjenljivu get metoda, uvijek su public
 	public int getX() {
 		return x;
-		//vraca vrijednost promjenljive x
 	}
 	
-	//SET je uvijek void i ima ulazni parametar
 	public void setX(int x) {
 		this.x=x;
 		//x=x2;
 	}
 	
 	public int getY() {
-		return this.y; // moze return y i be this
+		return this.y;
 	}
 	
 	public void setY(int y)
@@ -80,8 +73,8 @@ public class Point extends Shape{
 
 	public void draw(Graphics g) {
 		g.setColor(getColor());
-		g.drawLine (x-2,y, x+2, y);  //horizontalna linija
-		g.drawLine(x, y-2, x, y+2); //vertikalna linija 
+		g.drawLine (x-2,y, x+2, y); 
+		g.drawLine(x, y-2, x, y+2); 
 		
 		if (isSelected())
 		{

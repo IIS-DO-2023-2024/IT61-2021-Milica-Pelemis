@@ -8,7 +8,6 @@ public class Circle extends SurfaceShapes{
 	protected Point center;
 	protected int radius;
 	
-	//Konstruktori
 	
 	public Circle() {
 		
@@ -49,12 +48,10 @@ public class Circle extends SurfaceShapes{
 		return center.distance(p.getX(), p.getY()) <= radius;
 	}
 	
-	
-	//Obim kruga
 	public double circumference() {
 		return 2*radius*Math.PI;
 	}
-	//Povrsina kruga
+
 	public double area() {
 		return radius*radius*Math.PI;
 	}

@@ -20,13 +20,9 @@ public class DrawingSaveStrategy implements SaveStrategy {
 	@Override
 	public void save(File file) throws IOException {
 
-		ObjectOutputStream output =
-				new ObjectOutputStream(
-						new FileOutputStream(file));
+		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
 
-		output.writeObject(
-				new ArrayList<Shape>(
-						model.getShapes()));
+		output.writeObject(new ArrayList<Shape>(model.getShapes()));
 
 		output.close();
 	}

@@ -92,18 +92,15 @@ public class DrawingFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		/*
-		 * FILE MENU
+		/* FILE MENU
 		 */
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(panelColor);
-		menuBar.setBorder(
-				new MatteBorder(0, 0, 1, 0, borderColor));
+		menuBar.setBorder(new MatteBorder(0, 0, 1, 0, borderColor));
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
-		mnFile.setFont(
-				new Font("Segoe UI", Font.BOLD, 13));
+		mnFile.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		mnFile.setForeground(textColor);
 		menuBar.add(mnFile);
 
@@ -118,19 +115,14 @@ public class DrawingFrame extends JFrame {
 		mnFile.add(mntmLoadDrawing);
 		mnFile.add(mntmLoadLog);
 
-		/*
-		 * DRAWING VIEW
+		/* DRAWING VIEW
 		 */
 		contentPane.add(view, BorderLayout.CENTER);
 
-		/*
-		 * LEFT PANEL
+		/* LEFT PANEL
 		 */
 		JPanel pnlMenu = new JPanel();
-		pnlMenu.setBorder(
-				new CompoundBorder(
-						null,
-						new MatteBorder(0, 0, 0, 2, borderColor)));
+		pnlMenu.setBorder(new CompoundBorder(null, new MatteBorder(0, 0, 0, 2, borderColor)));
 
 		pnlMenu.setPreferredSize(new Dimension(150, 10));
 		pnlMenu.setBackground(backgroundColor);
@@ -140,27 +132,20 @@ public class DrawingFrame extends JFrame {
 		GridBagLayout gbl_pnlMenu = new GridBagLayout();
 		gbl_pnlMenu.columnWidths = new int[] {150, 0};
 		gbl_pnlMenu.rowHeights = new int[] {191, 270, 0};
-		gbl_pnlMenu.columnWeights =
-				new double[] {0.0, Double.MIN_VALUE};
-		gbl_pnlMenu.rowWeights =
-				new double[] {0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlMenu.columnWeights = new double[] {0.0, Double.MIN_VALUE};
+		gbl_pnlMenu.rowWeights = new double[] {0.0, 0.0, Double.MIN_VALUE};
 
 		pnlMenu.setLayout(gbl_pnlMenu);
 
-		/*
-		 * ACTIVE COLORS
+		/* ACTIVE COLORS
 		 */
 		JPanel pnlColors = new JPanel();
 
-		pnlColors.setBorder(
-				new CompoundBorder(
-						null,
-						new MatteBorder(0, 0, 1, 0, borderColor)));
+		pnlColors.setBorder(new CompoundBorder(null, new MatteBorder(0, 0, 1, 0, borderColor)));
 
 		pnlColors.setBackground(backgroundColor);
 
-		GridBagConstraints gbc_pnlColors =
-				new GridBagConstraints();
+		GridBagConstraints gbc_pnlColors = new GridBagConstraints();
 
 		gbc_pnlColors.fill = GridBagConstraints.BOTH;
 		gbc_pnlColors.insets = new Insets(0, 0, 5, 0);
@@ -172,21 +157,17 @@ public class DrawingFrame extends JFrame {
 		GridBagLayout gbl_pnlColors = new GridBagLayout();
 		gbl_pnlColors.columnWidths = new int[] {150, 0};
 		gbl_pnlColors.rowHeights = new int[] {48, 41, 41, 0};
-		gbl_pnlColors.columnWeights =
-				new double[] {0.0, Double.MIN_VALUE};
-		gbl_pnlColors.rowWeights =
-				new double[] {0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlColors.columnWeights = new double[] {0.0, Double.MIN_VALUE};
+		gbl_pnlColors.rowWeights = new double[] {0.0, 0.0, 0.0, Double.MIN_VALUE};
 
 		pnlColors.setLayout(gbl_pnlColors);
 
 		JLabel lblColors = new JLabel("Active colors");
 		lblColors.setHorizontalAlignment(SwingConstants.CENTER);
 		lblColors.setForeground(textColor);
-		lblColors.setFont(
-				new Font("Segoe UI", Font.BOLD, 14));
+		lblColors.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-		GridBagConstraints gbc_lblColors =
-				new GridBagConstraints();
+		GridBagConstraints gbc_lblColors = new GridBagConstraints();
 
 		gbc_lblColors.insets = new Insets(0, 0, 5, 0);
 		gbc_lblColors.gridx = 0;
@@ -196,8 +177,7 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnInsideColor);
 
-		GridBagConstraints gbc_insideColor =
-				new GridBagConstraints();
+		GridBagConstraints gbc_insideColor = new GridBagConstraints();
 
 		gbc_insideColor.insets = new Insets(0, 0, 5, 0);
 		gbc_insideColor.gridx = 0;
@@ -207,22 +187,19 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnOutsideColor);
 
-		GridBagConstraints gbc_outsideColor =
-				new GridBagConstraints();
+		GridBagConstraints gbc_outsideColor = new GridBagConstraints();
 
 		gbc_outsideColor.gridx = 0;
 		gbc_outsideColor.gridy = 2;
 
 		pnlColors.add(tglBtnOutsideColor, gbc_outsideColor);
 
-		/*
-		 * SHAPES
+		/* SHAPES
 		 */
 		JPanel pnlShapes = new JPanel();
 		pnlShapes.setBackground(backgroundColor);
 
-		GridBagConstraints gbc_pnlShapes =
-				new GridBagConstraints();
+		GridBagConstraints gbc_pnlShapes = new GridBagConstraints();
 
 		gbc_pnlShapes.fill = GridBagConstraints.BOTH;
 		gbc_pnlShapes.gridx = 0;
@@ -233,29 +210,20 @@ public class DrawingFrame extends JFrame {
 		GridBagLayout gbl_pnlShapes = new GridBagLayout();
 
 		gbl_pnlShapes.columnWidths = new int[] {150, 0};
-		gbl_pnlShapes.rowHeights =
-				new int[] {27, 31, 31, 31, 31, 31, 31, 0};
+		gbl_pnlShapes.rowHeights = new int[] {27, 31, 31, 31, 31, 31, 31, 0};
 
-		gbl_pnlShapes.columnWeights =
-				new double[] {0.0, Double.MIN_VALUE};
+		gbl_pnlShapes.columnWeights = new double[] {0.0, Double.MIN_VALUE};
 
-		gbl_pnlShapes.rowWeights =
-				new double[] {
-						0.0, 0.0, 0.0, 0.0,
-						0.0, 0.0, 0.0,
-						Double.MIN_VALUE
-				};
+		gbl_pnlShapes.rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
 		pnlShapes.setLayout(gbl_pnlShapes);
 
 		JLabel lblShapes = new JLabel("Shapes");
 		lblShapes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShapes.setForeground(textColor);
-		lblShapes.setFont(
-				new Font("Segoe UI", Font.BOLD, 14));
+		lblShapes.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-		GridBagConstraints gbc_lblShapes =
-				new GridBagConstraints();
+		GridBagConstraints gbc_lblShapes = new GridBagConstraints();
 
 		gbc_lblShapes.insets = new Insets(0, 0, 5, 0);
 		gbc_lblShapes.gridx = 0;
@@ -266,8 +234,7 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnPoint);
 		btnsShapes.add(tglBtnPoint);
 
-		GridBagConstraints gbc_point =
-				new GridBagConstraints();
+		GridBagConstraints gbc_point = new GridBagConstraints();
 
 		gbc_point.insets = new Insets(0, 0, 5, 0);
 		gbc_point.gridx = 0;
@@ -278,8 +245,7 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnLine);
 		btnsShapes.add(tglBtnLine);
 
-		GridBagConstraints gbc_line =
-				new GridBagConstraints();
+		GridBagConstraints gbc_line = new GridBagConstraints();
 
 		gbc_line.insets = new Insets(0, 0, 5, 0);
 		gbc_line.gridx = 0;
@@ -290,8 +256,7 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnRectangle);
 		btnsShapes.add(tglBtnRectangle);
 
-		GridBagConstraints gbc_rectangle =
-				new GridBagConstraints();
+		GridBagConstraints gbc_rectangle = new GridBagConstraints();
 
 		gbc_rectangle.insets = new Insets(0, 0, 5, 0);
 		gbc_rectangle.gridx = 0;
@@ -302,8 +267,7 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnCircle);
 		btnsShapes.add(tglBtnCircle);
 
-		GridBagConstraints gbc_circle =
-				new GridBagConstraints();
+		GridBagConstraints gbc_circle = new GridBagConstraints();
 
 		gbc_circle.insets = new Insets(0, 0, 5, 0);
 		gbc_circle.gridx = 0;
@@ -314,8 +278,7 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnDonut);
 		btnsShapes.add(tglBtnDonut);
 
-		GridBagConstraints gbc_donut =
-				new GridBagConstraints();
+		GridBagConstraints gbc_donut = new GridBagConstraints();
 
 		gbc_donut.insets = new Insets(0, 0, 5, 0);
 		gbc_donut.gridx = 0;
@@ -326,23 +289,18 @@ public class DrawingFrame extends JFrame {
 		styleButton(tglBtnHexagon);
 		btnsShapes.add(tglBtnHexagon);
 
-		GridBagConstraints gbc_hexagon =
-				new GridBagConstraints();
+		GridBagConstraints gbc_hexagon = new GridBagConstraints();
 
 		gbc_hexagon.gridx = 0;
 		gbc_hexagon.gridy = 6;
 
 		pnlShapes.add(tglBtnHexagon, gbc_hexagon);
 
-		/*
-		 * TOP PANEL
+		/* TOP PANEL
 		 */
 		JPanel panelNorth = new JPanel();
 
-		panelNorth.setBorder(
-				new CompoundBorder(
-						null,
-						new MatteBorder(0, 0, 1, 0, borderColor)));
+		panelNorth.setBorder(new CompoundBorder(null, new MatteBorder(0, 0, 1, 0, borderColor)));
 
 		panelNorth.setPreferredSize(new Dimension(50, 50));
 		panelNorth.setBackground(backgroundColor);
@@ -351,28 +309,22 @@ public class DrawingFrame extends JFrame {
 
 		GridBagLayout gbl_panelNorth = new GridBagLayout();
 
-		gbl_panelNorth.columnWidths =
-				new int[] {579, 24, 523, 0};
+		gbl_panelNorth.columnWidths = new int[] {579, 24, 523, 0};
 
-		gbl_panelNorth.rowHeights =
-				new int[] {50, 0};
+		gbl_panelNorth.rowHeights = new int[] {50, 0};
 
-		gbl_panelNorth.columnWeights =
-				new double[] {1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelNorth.columnWeights = new double[] {1.0, 0.0, 1.0, Double.MIN_VALUE};
 
-		gbl_panelNorth.rowWeights =
-				new double[] {1.0, Double.MIN_VALUE};
+		gbl_panelNorth.rowWeights = new double[] {1.0, Double.MIN_VALUE};
 
 		panelNorth.setLayout(gbl_panelNorth);
 
-		/*
-		 * TOP LEFT COMMANDS
+		/* TOP LEFT COMMANDS
 		 */
 		JPanel pnlMainCommands = new JPanel();
 		pnlMainCommands.setBackground(backgroundColor);
 
-		GridBagConstraints gbc_mainCommands =
-				new GridBagConstraints();
+		GridBagConstraints gbc_mainCommands = new GridBagConstraints();
 
 		gbc_mainCommands.insets = new Insets(0, 0, 0, 5);
 		gbc_mainCommands.gridx = 0;
@@ -382,33 +334,24 @@ public class DrawingFrame extends JFrame {
 
 		GridBagLayout gbl_mainCommands = new GridBagLayout();
 
-		gbl_mainCommands.columnWidths =
-				new int[] {160, 144, 144, 144, 0};
+		gbl_mainCommands.columnWidths = new int[] {160, 144, 144, 144, 0};
 
-		gbl_mainCommands.rowHeights =
-				new int[] {50, 0};
+		gbl_mainCommands.rowHeights = new int[] {50, 0};
 
-		gbl_mainCommands.columnWeights =
-				new double[] {
-						1.0, 1.0, 1.0, 1.0,
-						Double.MIN_VALUE
-				};
+		gbl_mainCommands.columnWeights = new double[] {1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 
-		gbl_mainCommands.rowWeights =
-				new double[] {1.0, Double.MIN_VALUE};
+		gbl_mainCommands.rowWeights = new double[] {1.0, Double.MIN_VALUE};
 
 		pnlMainCommands.setLayout(gbl_mainCommands);
 
 		styleButton(tglBtnDrawing);
 
-		tglBtnDrawing.addActionListener(
-				e -> controller.setOperationDrawing());
+		tglBtnDrawing.addActionListener(e -> controller.setOperationDrawing());
 
 		btnsOperation.add(tglBtnDrawing);
 		tglBtnDrawing.setSelected(true);
 
-		GridBagConstraints gbc_drawing =
-				new GridBagConstraints();
+		GridBagConstraints gbc_drawing = new GridBagConstraints();
 
 		gbc_drawing.insets = new Insets(0, 0, 0, 5);
 		gbc_drawing.gridx = 0;
@@ -418,26 +361,21 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnModifyOrDelete);
 
-		tglBtnModifyOrDelete.addActionListener(
-				e -> controller.setOperationEditDelete());
+		tglBtnModifyOrDelete.addActionListener(e -> controller.setOperationEditDelete());
 
 		btnsOperation.add(tglBtnModifyOrDelete);
 
-		GridBagConstraints gbc_select =
-				new GridBagConstraints();
+		GridBagConstraints gbc_select = new GridBagConstraints();
 
 		gbc_select.insets = new Insets(0, 0, 0, 5);
 		gbc_select.gridx = 1;
 		gbc_select.gridy = 0;
 
-		pnlMainCommands.add(
-				tglBtnModifyOrDelete,
-				gbc_select);
+		pnlMainCommands.add(tglBtnModifyOrDelete, gbc_select);
 
 		styleButton(tglBtnModify);
 
-		GridBagConstraints gbc_modify =
-				new GridBagConstraints();
+		GridBagConstraints gbc_modify = new GridBagConstraints();
 
 		gbc_modify.insets = new Insets(0, 0, 0, 5);
 		gbc_modify.gridx = 2;
@@ -447,28 +385,22 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnDelete);
 
-		GridBagConstraints gbc_delete =
-				new GridBagConstraints();
+		GridBagConstraints gbc_delete = new GridBagConstraints();
 
 		gbc_delete.gridx = 3;
 		gbc_delete.gridy = 0;
 
 		pnlMainCommands.add(tglBtnDelete, gbc_delete);
 
-		/*
-		 * TOP RIGHT COMMANDS
+		/* TOP RIGHT COMMANDS
 		 */
 		JPanel pnlHistory = new JPanel();
 
-		pnlHistory.setBorder(
-				new CompoundBorder(
-						null,
-						new MatteBorder(0, 1, 0, 0, borderColor)));
+		pnlHistory.setBorder(new CompoundBorder(null, new MatteBorder(0, 1, 0, 0, borderColor)));
 
 		pnlHistory.setBackground(backgroundColor);
 
-		GridBagConstraints gbc_history =
-				new GridBagConstraints();
+		GridBagConstraints gbc_history = new GridBagConstraints();
 
 		gbc_history.gridx = 2;
 		gbc_history.gridy = 0;
@@ -477,28 +409,19 @@ public class DrawingFrame extends JFrame {
 
 		GridBagLayout gbl_history = new GridBagLayout();
 
-		gbl_history.columnWidths =
-				new int[] {27, 154, 108, 45, 138, 0};
+		gbl_history.columnWidths = new int[] {27, 154, 108, 45, 138, 0};
 
-		gbl_history.rowHeights =
-				new int[] {50, 0};
+		gbl_history.rowHeights = new int[] {50, 0};
 
-		gbl_history.columnWeights =
-				new double[] {
-						0.0, 1.0, 1.0,
-						0.0, 1.0,
-						Double.MIN_VALUE
-				};
+		gbl_history.columnWeights = new double[] {0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 
-		gbl_history.rowWeights =
-				new double[] {1.0, Double.MIN_VALUE};
+		gbl_history.rowWeights = new double[] {1.0, Double.MIN_VALUE};
 
 		pnlHistory.setLayout(gbl_history);
 
 		styleButton(tglBtnUndo);
 
-		GridBagConstraints gbc_undo =
-				new GridBagConstraints();
+		GridBagConstraints gbc_undo = new GridBagConstraints();
 
 		gbc_undo.insets = new Insets(0, 0, 0, 5);
 		gbc_undo.gridx = 1;
@@ -508,8 +431,7 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnRedo);
 
-		GridBagConstraints gbc_redo =
-				new GridBagConstraints();
+		GridBagConstraints gbc_redo = new GridBagConstraints();
 
 		gbc_redo.insets = new Insets(0, 0, 0, 5);
 		gbc_redo.gridx = 2;
@@ -519,26 +441,21 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnLoadNext);
 
-		GridBagConstraints gbc_loadNext =
-				new GridBagConstraints();
+		GridBagConstraints gbc_loadNext = new GridBagConstraints();
 
 		gbc_loadNext.gridx = 4;
 		gbc_loadNext.gridy = 0;
 
 		pnlHistory.add(tglBtnLoadNext, gbc_loadNext);
 
-		/*
-		 * RIGHT PANEL - Z ORDER
+		/* RIGHT PANEL - Z ORDER
 		 */
 		JPanel pnlRight = new JPanel();
 
 		pnlRight.setPreferredSize(new Dimension(150, 10));
 		pnlRight.setMinimumSize(new Dimension(150, 10));
 
-		pnlRight.setBorder(
-				new CompoundBorder(
-						null,
-						new MatteBorder(0, 1, 0, 0, borderColor)));
+		pnlRight.setBorder(new CompoundBorder(null, new MatteBorder(0, 1, 0, 0, borderColor)));
 
 		pnlRight.setBackground(backgroundColor);
 
@@ -546,32 +463,22 @@ public class DrawingFrame extends JFrame {
 
 		GridBagLayout gbl_right = new GridBagLayout();
 
-		gbl_right.columnWidths =
-				new int[] {149, 0};
+		gbl_right.columnWidths = new int[] {149, 0};
 
-		gbl_right.rowHeights =
-				new int[] {80, 40, 40, 40, 40, 0};
+		gbl_right.rowHeights = new int[] {80, 40, 40, 40, 40, 0};
 
-		gbl_right.columnWeights =
-				new double[] {0.0, Double.MIN_VALUE};
+		gbl_right.columnWeights = new double[] {0.0, Double.MIN_VALUE};
 
-		gbl_right.rowWeights =
-				new double[] {
-						0.0, 0.0, 0.0,
-						0.0, 0.0,
-						Double.MIN_VALUE
-				};
+		gbl_right.rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
 		pnlRight.setLayout(gbl_right);
 
 		JLabel lblZOrder = new JLabel("Z order");
 
 		lblZOrder.setForeground(textColor);
-		lblZOrder.setFont(
-				new Font("Segoe UI", Font.BOLD, 14));
+		lblZOrder.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-		GridBagConstraints gbc_zLabel =
-				new GridBagConstraints();
+		GridBagConstraints gbc_zLabel = new GridBagConstraints();
 
 		gbc_zLabel.gridx = 0;
 		gbc_zLabel.gridy = 0;
@@ -580,8 +487,7 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnToFront);
 
-		GridBagConstraints gbc_toFront =
-				new GridBagConstraints();
+		GridBagConstraints gbc_toFront = new GridBagConstraints();
 
 		gbc_toFront.insets = new Insets(0, 0, 5, 0);
 		gbc_toFront.gridx = 0;
@@ -591,8 +497,7 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnToBack);
 
-		GridBagConstraints gbc_toBack =
-				new GridBagConstraints();
+		GridBagConstraints gbc_toBack = new GridBagConstraints();
 
 		gbc_toBack.insets = new Insets(0, 0, 5, 0);
 		gbc_toBack.gridx = 0;
@@ -602,37 +507,28 @@ public class DrawingFrame extends JFrame {
 
 		styleButton(tglBtnBringToFront);
 
-		GridBagConstraints gbc_bringToFront =
-				new GridBagConstraints();
+		GridBagConstraints gbc_bringToFront = new GridBagConstraints();
 
 		gbc_bringToFront.insets = new Insets(0, 0, 5, 0);
 		gbc_bringToFront.gridx = 0;
 		gbc_bringToFront.gridy = 3;
 
-		pnlRight.add(
-				tglBtnBringToFront,
-				gbc_bringToFront);
+		pnlRight.add(tglBtnBringToFront, gbc_bringToFront);
 
 		styleButton(tglBtnBringToBack);
 
-		GridBagConstraints gbc_bringToBack =
-				new GridBagConstraints();
+		GridBagConstraints gbc_bringToBack = new GridBagConstraints();
 
 		gbc_bringToBack.gridx = 0;
 		gbc_bringToBack.gridy = 4;
 
-		pnlRight.add(
-				tglBtnBringToBack,
-				gbc_bringToBack);
+		pnlRight.add(tglBtnBringToBack, gbc_bringToBack);
 
-		/*
-		 * LOG
+		/* LOG
 		 */
-		scrollPane.setPreferredSize(
-				new Dimension(1085, 155));
+		scrollPane.setPreferredSize(new Dimension(1085, 155));
 
-		scrollPane.setBorder(
-				new MatteBorder(1, 0, 0, 0, borderColor));
+		scrollPane.setBorder(new MatteBorder(1, 0, 0, 0, borderColor));
 
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 
@@ -642,23 +538,19 @@ public class DrawingFrame extends JFrame {
 
 		scrollPane.setViewportView(pnlLog);
 
-		lblLog.setHorizontalAlignment(
-				SwingConstants.CENTER);
+		lblLog.setHorizontalAlignment(SwingConstants.CENTER);
 
-		lblLog.setFont(
-				new Font("Segoe UI", Font.BOLD, 13));
+		lblLog.setFont(new Font("Segoe UI", Font.BOLD, 13));
 
 		lblLog.setForeground(textColor);
 		lblLog.setBackground(panelColor);
 		lblLog.setOpaque(true);
 
-		lblLog.setPreferredSize(
-				new Dimension(1085, 30));
+		lblLog.setPreferredSize(new Dimension(1085, 30));
 
 		pnlLog.add(lblLog, BorderLayout.NORTH);
 
-		textArea.setFont(
-				new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
 		textArea.setForeground(new Color(70, 70, 70));
 		textArea.setBackground(new Color(255, 255, 252));
@@ -667,20 +559,15 @@ public class DrawingFrame extends JFrame {
 
 		pnlLog.add(textArea, BorderLayout.CENTER);
 
-		/*
-		 * TOOLTIPS
+		/* TOOLTIPS
 		 */
-		tglBtnDrawing.setToolTipText(
-				"Draw a new shape");
+		tglBtnDrawing.setToolTipText("Draw a new shape");
 
-		tglBtnModifyOrDelete.setToolTipText(
-				"Select one or more shapes");
+		tglBtnModifyOrDelete.setToolTipText("Select one or more shapes");
 
-		tglBtnModify.setToolTipText(
-				"Modify the selected shape");
+		tglBtnModify.setToolTipText("Modify the selected shape");
 
-		tglBtnDelete.setToolTipText(
-				"Delete selected shapes");
+		tglBtnDelete.setToolTipText("Delete selected shapes");
 
 		tglBtnPoint.setToolTipText("Draw a point");
 		tglBtnLine.setToolTipText("Draw a line");
@@ -689,35 +576,25 @@ public class DrawingFrame extends JFrame {
 		tglBtnDonut.setToolTipText("Draw a donut");
 		tglBtnHexagon.setToolTipText("Draw a hexagon");
 
-		tglBtnInsideColor.setToolTipText(
-				"Choose active fill color");
+		tglBtnInsideColor.setToolTipText("Choose active fill color");
 
-		tglBtnOutsideColor.setToolTipText(
-				"Choose active edge color");
+		tglBtnOutsideColor.setToolTipText("Choose active edge color");
 
-		tglBtnUndo.setToolTipText(
-				"Undo the last command");
+		tglBtnUndo.setToolTipText("Undo the last command");
 
-		tglBtnRedo.setToolTipText(
-				"Redo the last undone command");
+		tglBtnRedo.setToolTipText("Redo the last undone command");
 
-		tglBtnLoadNext.setToolTipText(
-				"Execute the next command from the loaded log");
+		tglBtnLoadNext.setToolTipText("Execute the next command from the loaded log");
 
-		tglBtnToFront.setToolTipText(
-				"Move selected shape one position forward");
+		tglBtnToFront.setToolTipText("Move selected shape one position forward");
 
-		tglBtnToBack.setToolTipText(
-				"Move selected shape one position backward");
+		tglBtnToBack.setToolTipText("Move selected shape one position backward");
 
-		tglBtnBringToFront.setToolTipText(
-				"Move selected shape to the front");
+		tglBtnBringToFront.setToolTipText("Move selected shape to the front");
 
-		tglBtnBringToBack.setToolTipText(
-				"Move selected shape to the back");
+		tglBtnBringToBack.setToolTipText("Move selected shape to the back");
 
-		/*
-		 * INITIAL STATE
+		/* INITIAL STATE
 		 */
 		tglBtnModify.setEnabled(false);
 		tglBtnDelete.setEnabled(false);
@@ -736,40 +613,27 @@ public class DrawingFrame extends JFrame {
 
 		if (component instanceof javax.swing.AbstractButton) {
 
-			javax.swing.AbstractButton button =
-					(javax.swing.AbstractButton) component;
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton) component;
 
-			button.setBorder(
-					new LineBorder(
-							borderColor,
-							1,
-							true));
+			button.setBorder(new LineBorder(borderColor, 1, true));
 
-			button.setMinimumSize(
-					new Dimension(125, 32));
+			button.setMinimumSize(new Dimension(125, 32));
 
-			button.setPreferredSize(
-					new Dimension(125, 32));
+			button.setPreferredSize(new Dimension(125, 32));
 
 			button.setBackground(Color.WHITE);
 			button.setForeground(textColor);
 			button.setFocusPainted(false);
 
-			button.setFont(
-					new Font(
-							"Segoe UI",
-							Font.BOLD,
-							13));
+			button.setFont(new Font("Segoe UI", Font.BOLD, 13));
 
-			button.setAlignmentX(
-					Component.CENTER_ALIGNMENT);
+			button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		}
 	}
 
 	private void styleMenuItem(JMenuItem menuItem) {
 
-		menuItem.setFont(
-				new Font("Segoe UI", Font.PLAIN, 13));
+		menuItem.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
 		menuItem.setForeground(textColor);
 		menuItem.setBackground(panelColor);

@@ -12,10 +12,7 @@ public class DeleteShapeCommand implements Command {
 	private List<Shape> deletedShapes = new ArrayList<Shape>();
 	private List<Integer> indexes = new ArrayList<Integer>();
 
-	public DeleteShapeCommand(
-			DrawingModel model,
-			List<Shape> shapes,
-			List<Integer> indexes) {
+	public DeleteShapeCommand(DrawingModel model, List<Shape> shapes, List<Integer> indexes) {
 
 		this.model = model;
 		this.indexes.addAll(indexes);

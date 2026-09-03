@@ -9,7 +9,6 @@ public class Rectangle extends SurfaceShapes {
 	private int width;
 	private int height;
 	
-	//Konstruktori
 	
 	public Rectangle() {
 		
@@ -48,7 +47,6 @@ public class Rectangle extends SurfaceShapes {
 		return upperLeft + ",width" + width + ", height" + height; 
 	}
 	
-	//Overloading
 	public boolean contains (int x, int y) {
 		return (upperLeft.getX() <x && upperLeft.getX() + width > x && upperLeft.getY() < y && upperLeft.getY() + height > y);
 	}
@@ -57,17 +55,14 @@ public class Rectangle extends SurfaceShapes {
 		return upperLeft.getX() < p.getX() && upperLeft.getX() + width > p.getX() && upperLeft.getY() < p.getY() && upperLeft.getY() + height > p.getY();
 	}
 	
-	//Povrsina pravougaonika
 	public int area() {
 		return width*height;
 	}
 	
-	//Obim pravougaonika
 	public int circumference() {
 		return 2*width + 2*height;
 	}
 	
-	//Metode pristupa
 	public Point getUpperLeft() {
 		return upperLeft;
 	}
@@ -76,7 +71,7 @@ public class Rectangle extends SurfaceShapes {
 		this.upperLeft = upperLeft; 
 	}
 	
-	public int getwidth() {
+	public int getWidth() {
 		return width;
 	}
 	

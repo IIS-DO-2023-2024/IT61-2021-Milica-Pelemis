@@ -16,8 +16,7 @@ public class LogSaveStrategy implements SaveStrategy {
 	@Override
 	public void save(File file) throws IOException {
 
-		BufferedWriter writer =
-				new BufferedWriter(new FileWriter(file));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
 		writer.write(log);
 

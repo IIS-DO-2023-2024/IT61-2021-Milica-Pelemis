@@ -22,7 +22,6 @@ public class Donut extends Circle {
 
 	}
 
-	// inicijalizovanje centra, radijusa, inner-a
 	public Donut(Point center, int radius, int innerRadius) {
 		super(center, radius);
 		this.innerRadius = innerRadius;
@@ -85,11 +84,9 @@ public class Donut extends Circle {
 
 		donutArea.subtract(new Area(innerCircle));
 
-		// boja unutrasnjosti 
 		g2d.setColor(getInnerColor());
 		g2d.fill(donutArea);
 
-		// boja ivice - iscrta i spoljasnju i unutrasnju ivicu
 		g2d.setColor(getColor());
 		g2d.draw(donutArea);
 
@@ -97,14 +94,12 @@ public class Donut extends Circle {
 
 			g.setColor(Color.BLUE);
 
-			// centar
 			g.drawRect(
 					getCenter().getX() - 2,
 					getCenter().getY() - 2,
 					4,
 					4);
 
-			// spoljasnji krug
 			g.drawRect(
 					getCenter().getX() - 2,
 					getCenter().getY() - getRadius() - 2,
@@ -129,7 +124,7 @@ public class Donut extends Circle {
 					4,
 					4);
 
-			// unutrasnji krug
+
 			g.drawRect(
 					getCenter().getX() - innerRadius - 2,
 					getCenter().getY() - 2,

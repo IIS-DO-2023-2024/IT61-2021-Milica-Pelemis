@@ -37,9 +37,6 @@ public class ToFrontCommand implements Command {
 	@Override
 	public String toString() {
 
-		return "TO_FRONT"
-				+ " oldIndex=" + oldIndex
-				+ " newIndex=" + newIndex
-				+ " shape=[" + ShapeLogFormatter.format(shape) + "]";
+		return "TO_FRONT" + " oldIndex=" + oldIndex + " newIndex=" + newIndex + " shape=[" + ShapeLogFormatter.format(shape) + "]";
 	}
 }

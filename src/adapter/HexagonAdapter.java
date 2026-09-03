@@ -137,34 +137,14 @@ public class HexagonAdapter extends Shape {
 	}
 
 	@Override
-	public int compareTo(Object obj) {
-
-		if (obj instanceof HexagonAdapter) {
-
-			HexagonAdapter other =
-					(HexagonAdapter) obj;
-
-			return getRadius() - other.getRadius();
-		}
-
-		return 0;
-	}
-
-	@Override
 	public Shape clone() {
 
-		return new HexagonAdapter(
-				new Point(getX(), getY()),
-				getRadius(),
-				isSelected(),
-				getColor(),
-				getInnerColor());
+		return new HexagonAdapter(new Point(getX(), getY()), getRadius(), isSelected(), getColor(), getInnerColor());
 	}
 
 	@Override
 	public String toString() {
 
-		return "Center point =(" + getX() + "," + getY() + ")"
-				+ " Radius =" + getRadius();
+		return "Center point =(" + getX() + "," + getY() + ")" + " Radius =" + getRadius();
 	}
 }

@@ -37,9 +37,6 @@ public class BringToBackCommand implements Command {
 	@Override
 	public String toString() {
 
-		return "BRING_TO_BACK"
-				+ " oldIndex=" + oldIndex
-				+ " newIndex=" + newIndex
-				+ " shape=[" + ShapeLogFormatter.format(shape) + "]";
+		return "BRING_TO_BACK" + " oldIndex=" + oldIndex + " newIndex=" + newIndex + " shape=[" + ShapeLogFormatter.format(shape) + "]";
 	}
 }

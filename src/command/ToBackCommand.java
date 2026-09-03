@@ -37,9 +37,6 @@ public class ToBackCommand implements Command {
 	@Override
 	public String toString() {
 
-		return "TO_BACK"
-				+ " oldIndex=" + oldIndex
-				+ " newIndex=" + newIndex
-				+ " shape=[" + ShapeLogFormatter.format(shape) + "]";
+		return "TO_BACK" + " oldIndex=" + oldIndex + " newIndex=" + newIndex + " shape=[" + ShapeLogFormatter.format(shape) + "]";
 	}
 }
